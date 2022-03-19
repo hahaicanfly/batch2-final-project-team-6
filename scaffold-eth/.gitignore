@@ -1,3 +1,5 @@
+packages/hardhat/uploaded.json
+packages/react-app/src/assets.js
 packages/subgraph/subgraph.yaml
 packages/subgraph/generated
 packages/subgraph/abis/*
@@ -45,7 +47,7 @@ coverage
 # production
 build
 
-# Hardhat files
+#Hardhat files
 cache
 artifacts
 
@@ -64,6 +66,3 @@ yarn-error.log*
 .netlify
 *.tsbuildinfo
 *.stackdump
-
-# doc directory
-/doc

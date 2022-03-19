@@ -1,12 +1,11 @@
 import { Button } from "antd";
 import React from "react";
 import { useThemeSwitcher } from "react-css-theme-switcher";
-
 import Address from "./Address";
 import Balance from "./Balance";
 import Wallet from "./Wallet";
 
-/** 
+/*
   ~ What it does? ~
 
   Displays an Address, Balance, and Wallet as one Account component,
@@ -15,7 +14,6 @@ import Wallet from "./Wallet";
   ~ How can I use? ~
 
   <Account
-    useBurner={boolean}
     address={address}
     localProvider={localProvider}
     userProvider={userProvider}
@@ -25,7 +23,6 @@ import Wallet from "./Wallet";
     loadWeb3Modal={loadWeb3Modal}
     logoutOfWeb3Modal={logoutOfWeb3Modal}
     blockExplorer={blockExplorer}
-    isContract={boolean}
   />
 
   ~ Features ~
@@ -40,10 +37,9 @@ import Wallet from "./Wallet";
               to be able to log in/log out to/from existing accounts
   - Provide blockExplorer={blockExplorer}, click on address and get the link
               (ex. by default "https://etherscan.io/" or for xdai "https://blockscout.com/poa/xdai/")
-**/
+*/
 
 export default function Account({
-  useBurner,
   address,
   userSigner,
   localProvider,
@@ -54,10 +50,7 @@ export default function Account({
   loadWeb3Modal,
   logoutOfWeb3Modal,
   blockExplorer,
-  isContract,
 }) {
-  const { currentTheme } = useThemeSwitcher();
-
   const modalButtons = [];
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
@@ -87,49 +80,27 @@ export default function Account({
       );
     }
   }
+
+  const { currentTheme } = useThemeSwitcher();
+
   const display = minimized ? (
     ""
   ) : (
     <span>
-      {web3Modal && web3Modal.cachedProvider ? (
-        <>
-          {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
-          <Balance address={address} provider={localProvider} price={price} />
-          <Wallet
-            address={address}
-            provider={localProvider}
-            signer={userSigner}
-            ensProvider={mainnetProvider}
-            price={price}
-            color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          />
-        </>
-      ) : useBurner ? (
-        ""
-      ) : isContract ? (
-        <>
-          {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
-          <Balance address={address} provider={localProvider} price={price} />
-        </>
+      {address ? (
+        <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
       ) : (
-        ""
+        "Connecting..."
       )}
-      {useBurner && web3Modal && !web3Modal.cachedProvider ? (
-        <>
-          <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
-          <Balance address={address} provider={localProvider} price={price} />
-          <Wallet
-            address={address}
-            provider={localProvider}
-            signer={userSigner}
-            ensProvider={mainnetProvider}
-            price={price}
-            color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          />
-        </>
-      ) : (
-        <></>
-      )}
+      <Balance address={address} provider={localProvider} price={price} />
+      <Wallet
+        address={address}
+        provider={localProvider}
+        signer={userSigner}
+        ensProvider={mainnetProvider}
+        price={price}
+        color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
+      />
     </span>
   );
 

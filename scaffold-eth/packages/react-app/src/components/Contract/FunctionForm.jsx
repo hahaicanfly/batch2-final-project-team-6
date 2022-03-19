@@ -1,15 +1,14 @@
 import { Button, Col, Divider, Input, Row, Tooltip } from "antd";
 import React, { useState } from "react";
 import Blockies from "react-blockies";
-
 import { Transactor } from "../../helpers";
-import { tryToDisplay, tryToDisplayAsText } from "./utils";
+import tryToDisplay from "./utils";
 
 const { utils, BigNumber } = require("ethers");
 
 const getFunctionInputKey = (functionInfo, input, inputIndex) => {
-  const name = input?.name ? input.name : "input_" + inputIndex + "_";
-  return functionInfo.name + "_" + name + "_" + input.type;
+  const name = input?.name ? input.name : 'input_' + inputIndex + '_'
+  return functionInfo.name + "_" + name + '_' + input.type;
 };
 
 export default function FunctionForm({ contractFunction, functionInfo, provider, gasPrice, triggerRefresh }) {
@@ -160,12 +159,6 @@ export default function FunctionForm({ contractFunction, functionInfo, provider,
     inputs.push(txValueInput);
   }
 
-  const handleForm = returned => {
-    if (returned) {
-      setForm({});
-    }
-  };
-
   const buttonIcon =
     functionInfo.type === "call" ? (
       <Button style={{ marginLeft: -32 }}>Read📡</Button>
@@ -204,10 +197,10 @@ export default function FunctionForm({ contractFunction, functionInfo, provider,
               if (functionInfo.stateMutability === "view" || functionInfo.stateMutability === "pure") {
                 try {
                   const returned = await contractFunction(...args);
-                  handleForm(returned);
-                  result = tryToDisplayAsText(returned);
-                } catch (err) {
-                  console.error(err);
+                  result = tryToDisplay(returned);
+                }
+                catch (err) {
+                  console.error(err)
                 }
               } else {
                 const overrides = {};
@@ -222,7 +215,6 @@ export default function FunctionForm({ contractFunction, functionInfo, provider,
 
                 // console.log("Running with extras",extras)
                 const returned = await tx(contractFunction(...args, overrides));
-                handleForm(returned);
                 result = tryToDisplay(returned);
               }
 
@@ -258,3 +250,4 @@ export default function FunctionForm({ contractFunction, functionInfo, provider,
     </div>
   );
 }
+
