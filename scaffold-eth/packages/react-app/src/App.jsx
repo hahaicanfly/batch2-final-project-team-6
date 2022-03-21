@@ -11,7 +11,7 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import StackGrid from "react-stack-grid";
 import Web3Modal from "web3modal";
 import "./App.css";
-import assets from "./assets.js";
+//import assets from "./assets.js";
 import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
@@ -43,8 +43,8 @@ const { BufferList } = require("bl");
 const ipfsAPI = require("ipfs-http-client");
 
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
-
-console.log("📦 Assets: ", assets);
+var assets = {};
+//console.log("📦 Assets: ", assets);
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -213,8 +213,8 @@ function App(props) {
     poktMainnetProvider && poktMainnetProvider._isProvider
       ? poktMainnetProvider
       : scaffoldEthProvider && scaffoldEthProvider._network
-      ? scaffoldEthProvider
-      : mainnetInfura;
+        ? scaffoldEthProvider
+        : mainnetInfura;
 
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
@@ -541,16 +541,28 @@ function App(props) {
   const [loadedAssets, setLoadedAssets] = useState();
   useEffect(() => {
     const updateYourCollectibles = async () => {
+      const count = await readContracts.YourCollectible.getTotalThreadCount();
+      const countNumber = count.toNumber();
+      for (let i = 1; i < countNumber+1; i++) {
+        const threadRaw = await readContracts.YourCollectible.getThreadById(i);
+        const ipfsHash = threadRaw.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
+        const jsonManifestBuffer = await getFromIPFS(ipfsHash);
+        const jsonManifest = JSON.parse(jsonManifestBuffer);
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',jsonManifest)
+        let owner = await readContracts.YourCollectible.getThreadOwner(i);
+        assets[ipfsHash] = { ...jsonManifest, owner };
+      }
+
       const assetUpdate = [];
       for (const a in assets) {
         try {
-          const forSale = await readContracts.YourCollectible.forSale(ethers.utils.id(a));
-          let owner;
-          if (!forSale) {
-            const tokenId = await readContracts.YourCollectible.uriToTokenId(ethers.utils.id(a));
-            owner = await readContracts.YourCollectible.ownerOf(tokenId);
-          }
-          assetUpdate.push({ id: a, ...assets[a], forSale, owner });
+          // const forSale = await readContracts.YourCollectible.forSale(ethers.utils.id(a));
+          // let owner;
+          // if (!forSale) {
+          //   const tokenId = await readContracts.YourCollectible.uriToTokenId(ethers.utils.id(a));
+          //   owner = await readContracts.YourCollectible.ownerOf(tokenId);
+          // }
+          assetUpdate.push({ id: a, ...assets[a] });
         } catch (e) {
           console.log(e);
         }
@@ -565,32 +577,17 @@ function App(props) {
     console.log("loadedAssets", a, loadedAssets[a]);
 
     const cardActions = [];
-    if (loadedAssets[a].forSale) {
-      cardActions.push(
-        <div>
-          <Button
-            onClick={() => {
-              console.log("gasPrice,", gasPrice);
-              tx(writeContracts.YourCollectible.mintItem(loadedAssets[a].id, { gasPrice }));
-            }}
-          >
-            Mint
-          </Button>
-        </div>,
-      );
-    } else {
-      cardActions.push(
-        <div>
-          owned by:{" "}
-          <Address
-            address={loadedAssets[a].owner}
-            ensProvider={mainnetProvider}
-            blockExplorer={blockExplorer}
-            minimized
-          />
-        </div>,
-      );
-    }
+    cardActions.push(
+      <div>
+        owned by:{" "}
+        <Address
+          address={loadedAssets[a].owner}
+          ensProvider={mainnetProvider}
+          blockExplorer={blockExplorer}
+          minimized
+        />
+      </div>,
+    );
 
     galleryList.push(
       <Card
@@ -611,13 +608,56 @@ function App(props) {
           </div>
         }
       >
-                {/* <img style={{ maxWidth: 130 }} src={loadedAssets[a].image} alt="" /> */}
-                {loadedAssets[a].image[0].author}
-                {loadedAssets[a].image[0].content}
+        {/* <img style={{ maxWidth: 130 }} src={loadedAssets[a].image} alt="" /> */}
+        {loadedAssets[a].image[0].author}
+        {loadedAssets[a].image[0].content}
         <div style={{ opacity: 0.77 }}>{loadedAssets[a].description}</div>
       </Card>,
     );
   }
+
+  galleryList.push(
+    <Button
+      onClick={() => {
+        console.log("gasPrice,", gasPrice);
+
+        const stringJSON = JSON.stringify({
+              name: "article2",
+              description: "What is it so worried about?",
+              external_url: "https://austingriffith.com/portfolio/paintings/?id=zebra",
+              image: [{
+                authorName: "henry",
+                content: "廢文2 測試",
+                timeStamp: "2022-02-01",
+                cover: "https://austingriffith.com/images/paintings/fish.jpg"
+              }],
+              attributes: [
+                {
+                  trait_type: "BackgroundColor",
+                  value: "blue"
+                },
+                {
+                  trait_type: "Eyes",
+                  value: "googly"
+                },
+                {
+                  trait_type: "Stamina",
+                  value: 38
+                }
+              ]
+            });
+        const uploadFile = async () => {
+          const uploaded = await ipfs.add(stringJSON);
+          let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22))
+          let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22))
+          tx(writeContracts.YourCollectible.postThread(bytes32First, bytes32Sec, { gasPrice }));
+        }
+        uploadFile();
+      }}
+    >
+      Post
+    </Button>,
+  );
 
   return (
     <div className="App">
