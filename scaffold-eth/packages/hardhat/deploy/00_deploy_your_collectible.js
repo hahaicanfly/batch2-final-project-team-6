@@ -11,19 +11,22 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
   // read in all the assets to get their IPFS hash...
   let uploadedAssets = JSON.parse(fs.readFileSync("./uploaded.json"))
-  let bytes32Array = []
-  for(let a in uploadedAssets){
-    console.log(" 🏷 IPFS:",a)
-    let bytes32 = ethers.utils.id(a)
-    console.log(" #️⃣ hashed:",bytes32)
-    bytes32Array.push(bytes32)
-  }
+  let bytes32ArrayFirst = []
+  let bytes32ArraySec = []
+  // for(let a in uploadedAssets){
+  //   console.log(" 🏷 IPFS:",a)
+  //   let bytes32First = ethers.utils.formatBytes32String(a.substring(0,22))
+  //   let bytes32Sec = ethers.utils.formatBytes32String(a.substring(22))
+  //   console.log(" #️⃣ hashed:",bytes32First+bytes32Sec)
+  //   bytes32ArrayFirst.push(bytes32First)
+  //   bytes32ArraySec.push(bytes32Sec)
+  // }
   console.log(" \n")
 
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [ bytes32Array ],
+    args: [  ],
     log: true,
   });
 

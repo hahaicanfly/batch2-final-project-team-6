@@ -3,14 +3,12 @@
     "name": "article1",
     "description": "It's actually a bison?",
     "external_url": "https://austingriffith.com/portfolio/paintings/?id=buffalo",
-    "image": [
-      {
-        "authorName": "henry",
-        "content": "¼o¤å1",
-        "timeStamp": "2022-01-01",
-        "cover": "https://austingriffith.com/images/paintings/fish.jpg"
-      }
-    ],
+    "image": [{
+      "authorName": "henry",
+      "content": "å»¢æ–‡1",
+      "timeStamp": "2022-01-01",
+      "cover": "https://austingriffith.com/images/paintings/fish.jpg"
+    }],
     "attributes": [
       {
         "trait_type": "BackgroundColor",
@@ -30,14 +28,12 @@
     "name": "article2",
     "description": "What is it so worried about?",
     "external_url": "https://austingriffith.com/portfolio/paintings/?id=zebra",
-    "image": [
-      {
-        "authorName": "henry",
-        "content": "¼o¤å2 ´ú¸Õ",
-        "timeStamp": "2022-02-01",
-        "cover": "https://austingriffith.com/images/paintings/fish.jpg"
-      }
-    ],
+    "image": [{
+      "authorName": "henry",
+      "content": "å»¢æ–‡2 æ¸¬è©¦",
+      "timeStamp": "2022-02-01",
+      "cover": "https://austingriffith.com/images/paintings/fish.jpg"
+    }],
     "attributes": [
       {
         "trait_type": "BackgroundColor",
