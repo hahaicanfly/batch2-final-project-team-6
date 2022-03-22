@@ -550,7 +550,8 @@ function App(props) {
         const jsonManifest = JSON.parse(jsonManifestBuffer);
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',jsonManifest)
         let owner = await readContracts.YourCollectible.getThreadOwner(i);
-        assets[ipfsHash] = { ...jsonManifest, owner };
+        let count = await readContracts.YourCollectible.getThreadGoodCount(i);
+        assets[ipfsHash] = { ...jsonManifest, owner, threadId: i, good: count.toNumber() };
       }
 
       const assetUpdate = [];
@@ -587,6 +588,14 @@ function App(props) {
           minimized
         />
       </div>,
+          <Button
+          onClick={() => {
+            console.log("gasPrice,", gasPrice);
+            tx(writeContracts.YourCollectible.giveThreadOneGood(loadedAssets[a].threadId, { gasPrice }));
+          }}
+        >
+          Good
+        </Button>,
     );
 
     galleryList.push(
@@ -612,6 +621,7 @@ function App(props) {
         {loadedAssets[a].image[0].author}
         {loadedAssets[a].image[0].content}
         <div style={{ opacity: 0.77 }}>{loadedAssets[a].description}</div>
+        good: {loadedAssets[a].good}
       </Card>,
     );
   }
