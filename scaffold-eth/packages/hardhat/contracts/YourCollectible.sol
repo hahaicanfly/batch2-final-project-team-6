@@ -110,4 +110,22 @@ contract YourCollectible is ERC721 {
       return _tokenIds.current();
   }
 
+    function giveThreadOneGood(uint256 threadId)
+      public threadExist(threadId)
+  {
+      allThread[threadId].good += 1;
+  }
+
+    function getThreadGoodCount(uint256 threadId) 
+      public view threadExist(threadId)
+      returns (uint256)
+  {
+      return allThread[threadId].good;
+  }
+
+    modifier threadExist(uint256 threadId) {
+      require(threadId <= _tokenIds.current(),"Input threadId not found!");
+      _;
+    }
+
 }
