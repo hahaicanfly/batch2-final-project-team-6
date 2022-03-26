@@ -30,6 +30,18 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log: true,
   });
 
+  await deploy("GoveranceToken", {
+    from: deployer,
+    args: [  ],
+    log: true,
+  });
+
+  await deploy("UtilizeToken", {
+    from: deployer,
+    args: [  ],
+    log: true,
+  });
+
   /*
     // Getting a previously deployed contract
     const YourContract = await ethers.getContract("YourContract", deployer);
@@ -66,7 +78,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   });
   */
 };
-module.exports.tags = ["YourCollectible"];
+module.exports.tags = ["YourCollectible","GoveranceToken","UtilizeToken"];
 
 /*
 Tenderly verification

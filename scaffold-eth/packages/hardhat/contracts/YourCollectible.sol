@@ -23,8 +23,16 @@ contract YourCollectible is ERC721 {
     uint256 suspect;
   }
 
+  struct UserProfile {
+      bytes32 profileJSON;
+      bytes32 profileJSON2;
+      bytes32 nickName;
+      uint256[] threads;
+  }
+
   mapping(uint256 => Thread) public allThread;
   mapping(address => bool) public whiteList;
+  mapping(address => UserProfile) public userProfiles;
 
   constructor() public ERC721("YourCollectible", "YCB") {
     _setBaseURI("https://ipfs.io/ipfs/");

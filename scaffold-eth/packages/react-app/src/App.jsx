@@ -535,6 +535,8 @@ function App(props) {
 
   const [downloading, setDownloading] = useState();
   const [ipfsContent, setIpfsContent] = useState();
+  const [yourGoveranceToken, setGoveranceToken] = useState();
+  const [yourUtilizeToken, setUtilizeToken] = useState();
 
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
@@ -685,6 +687,16 @@ function App(props) {
               to="/"
             >
               Gallery
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/token">
+            <Link
+              onClick={() => {
+                setRoute("/token");
+              }}
+              to="/token"
+            >
+              Token
             </Link>
           </Menu.Item>
           <Menu.Item key="/yourcollectibles">
@@ -921,6 +933,37 @@ function App(props) {
               blockExplorer={blockExplorer}
             />
             */}
+          </Route>
+          <Route path="/token">
+            <div style={{ paddingTop: 32, width: 740, margin: "auto" }}>
+            { setTimeout(async () => { 
+              if(readContracts && readContracts.GoveranceToken){
+                            const GoveranceToken = await readContracts.GoveranceToken.balanceOf(address);
+                            const UtilizeToken = await readContracts.UtilizeToken.balanceOf(address);
+                            setGoveranceToken(GoveranceToken.toNumber());
+                            setUtilizeToken(UtilizeToken.toNumber());
+              }
+                            }) }
+            </div>
+            <Button
+              onClick={() => {
+                console.log("gasPrice,", gasPrice);
+                tx(writeContracts.GoveranceToken.mint(address, 10000, { gasPrice }));
+              }}
+            >
+              Mint 10000 GT Token
+            </Button>,
+            <Button
+              onClick={() => {
+                console.log("gasPrice,", gasPrice);
+                tx(writeContracts.UtilizeToken.mint(address, 10000, { gasPrice }));
+              }}
+            >
+              Mint 10000 UT Token
+            </Button>,
+            <div>GT balance: { yourGoveranceToken }</div>
+            <div>UT balance: {yourUtilizeToken}</div>
+            <pre style={{ padding: 16, width: 500, margin: "auto", paddingBottom: 150 }}></pre>
           </Route>
         </Switch>
       </BrowserRouter>
