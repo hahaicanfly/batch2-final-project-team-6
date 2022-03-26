@@ -1,4 +1,4 @@
-import { LinkOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, LinkOutlined } from "@ant-design/icons";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 //import Torus from "@toruslabs/torus-embed"
@@ -23,15 +23,11 @@ import {
   useOnBlock,
   useUserProviderAndSigner,
 } from "eth-hooks";
-import {
-  useEventListener,
-} from "eth-hooks/events/useEventListener";
-import {
-  useExchangeEthPrice,
-} from "eth-hooks/dapps/dex";
+import { useEventListener } from "eth-hooks/events/useEventListener";
+import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 // import Hints from "./Hints";
 
-import { useContractConfig } from "./hooks"
+import { useContractConfig } from "./hooks";
 import Portis from "@portis/web3";
 import Fortmatic from "fortmatic";
 import Authereum from "authereum";
@@ -66,6 +62,8 @@ var assets = {};
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+console.warn("🌍🌍🌍NETWORKS.localhost", NETWORKS.localhost);
+console.warn("🌍🌍🌍targetNetwork", targetNetwork);
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -114,7 +112,11 @@ if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
 const scaffoldEthProvider = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544")
   : null;
-const poktMainnetProvider = navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://eth-mainnet.gateway.pokt.network/v1/lb/611156b4a585a20035148406") : null;
+const poktMainnetProvider = navigator.onLine
+  ? new ethers.providers.StaticJsonRpcProvider(
+    "https://eth-mainnet.gateway.pokt.network/v1/lb/611156b4a585a20035148406",
+  )
+  : null;
 const mainnetInfura = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID)
   : null;
@@ -158,7 +160,6 @@ const web3Modal = new Web3Modal({
           100: "https://dai.poa.network", // xDai
         },
       },
-
     },
     portis: {
       display: {
@@ -183,10 +184,10 @@ const web3Modal = new Web3Modal({
     //     networkParams: {
     //       host: "https://localhost:8545", // optional
     //       chainId: 1337, // optional
-    //       networkId: 1337 // optional
+    //       networkId: 1337, // optional
     //     },
     //     config: {
-    //       buildEnv: "development" // optional
+    //       buildEnv: "development", // optional
     //     },
     //   },
     // },
@@ -272,8 +273,12 @@ function App(props) {
   // Load in your local 📝 contract and read a value from it:
   const readContracts = useContractLoader(localProvider, contractConfig);
 
+  // console.error("userSigner", userSigner);
+  // console.error("contractConfig", contractConfig);
+  console.warn("🌍🌍🌍🌍🌍🌍localChainId", localChainId);
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
-  const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
+  // const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
+  const writeContracts = useContractLoader(userSigner, contractConfig, 31337);
 
   // EXTERNAL CONTRACT EXAMPLE:
   //
@@ -282,7 +287,7 @@ function App(props) {
 
   // If you want to call a function on a new block
   useOnBlock(mainnetProvider, () => {
-    console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
+    // console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
   });
 
   // Then read your DAI balance like:
@@ -292,11 +297,11 @@ function App(props) {
 
   // keep track of a variable from the contract in the local React state:
   const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
-  console.log("🤗 balance:", balance);
+  // console.log("🤗 balance:", balance);
 
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
-  console.log("📟 Transfer events:", transferEvents);
+  // console.log("📟 Transfer events:", transferEvents);
 
   //
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
@@ -306,6 +311,7 @@ function App(props) {
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
+      console.error("updateYourCollectibles");
       const collectibleUpdate = [];
       for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
         try {
@@ -464,8 +470,6 @@ function App(props) {
     );
   }
 
-
-
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
     setInjectedProvider(new ethers.providers.Web3Provider(provider));
@@ -543,14 +547,15 @@ function App(props) {
   const [loadedAssets, setLoadedAssets] = useState();
   useEffect(() => {
     const updateYourCollectibles = async () => {
+      console.error("updateYourCollectibles");
       const count = await readContracts.YourCollectible.getTotalThreadCount();
       const countNumber = count.toNumber();
-      for (let i = 1; i < countNumber+1; i++) {
+      for (let i = 1; i < countNumber + 1; i++) {
         const threadRaw = await readContracts.YourCollectible.getThreadById(i);
-        const ipfsHash = threadRaw.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
+        const ipfsHash = threadRaw.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, "");
         const jsonManifestBuffer = await getFromIPFS(ipfsHash);
         const jsonManifest = JSON.parse(jsonManifestBuffer);
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',jsonManifest)
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", jsonManifest);
         let owner = await readContracts.YourCollectible.getThreadOwner(i);
         let count = await readContracts.YourCollectible.getThreadGoodCount(i);
         assets[ipfsHash] = { ...jsonManifest, owner, threadId: i, good: count.toNumber() };
@@ -590,14 +595,14 @@ function App(props) {
           minimized
         />
       </div>,
-          <Button
-          onClick={() => {
-            console.log("gasPrice,", gasPrice);
-            tx(writeContracts.YourCollectible.giveThreadOneGood(loadedAssets[a].threadId, { gasPrice }));
-          }}
-        >
-          Good
-        </Button>,
+      <Button
+        onClick={() => {
+          console.log("gasPrice,", gasPrice);
+          tx(writeContracts.YourCollectible.giveThreadOneGood(loadedAssets[a].threadId, { gasPrice }));
+        }}
+      >
+        Good
+      </Button>,
     );
 
     galleryList.push(
@@ -634,36 +639,40 @@ function App(props) {
         console.log("gasPrice,", gasPrice);
 
         const stringJSON = JSON.stringify({
-              name: "article2",
-              description: "What is it so worried about?",
-              external_url: "https://austingriffith.com/portfolio/paintings/?id=zebra",
-              image: [{
-                authorName: "henry",
-                content: "廢文2 測試",
-                timeStamp: "2022-02-01",
-                cover: "https://austingriffith.com/images/paintings/fish.jpg"
-              }],
-              attributes: [
-                {
-                  trait_type: "BackgroundColor",
-                  value: "blue"
-                },
-                {
-                  trait_type: "Eyes",
-                  value: "googly"
-                },
-                {
-                  trait_type: "Stamina",
-                  value: 38
-                }
-              ]
-            });
+          name: "article2",
+          description: "What is it so worried about?",
+          external_url: "https://austingriffith.com/portfolio/paintings/?id=zebra",
+          image: [
+            {
+              authorName: "henry",
+              content: "廢文2 測試",
+              timeStamp: "2022-02-01",
+              cover: "https://austingriffith.com/images/paintings/fish.jpg",
+            },
+          ],
+          attributes: [
+            {
+              trait_type: "BackgroundColor",
+              value: "blue",
+            },
+            {
+              trait_type: "Eyes",
+              value: "googly",
+            },
+            {
+              trait_type: "Stamina",
+              value: 38,
+            },
+          ],
+        });
         const uploadFile = async () => {
           const uploaded = await ipfs.add(stringJSON);
-          let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22))
-          let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22))
+          let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
+          let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
+          console.error("writeContracts", writeContracts);
+          console.error("writeContracts YourCollectible", writeContracts.YourCollectible);
           tx(writeContracts.YourCollectible.postThread(bytes32First, bytes32Sec, { gasPrice }));
-        }
+        };
         uploadFile();
       }}
     >
