@@ -1,10 +1,24 @@
+import { Header } from '../../components'
+import ArrowImg from '../../assets/images/arrow.svg'
 
 export const Section1 = () => {
   return (
-    <div className="section1">
-      安全、便捷，去中心化，為 NFT 資產創造更多價值的自由租賃平台。
-      <br />
-      KryptoCamp Team1 Demo
-    </div>
+    <section className="section1">
+      <Header />
+
+      <div className="flex-justify flex-column">
+        <h1 className="title">Trust News</h1>
+        <span>The Best SocialFi Info Platform
+          <br />
+          便捷、去中心化，為信任的資訊提供平台
+        </span>
+        <div className="btn-list">
+          <button className="btn btn-border">Let’s go</button>
+        </div>
+        <div className="arrow">
+          <img src={ArrowImg} alt="Arrow" />
+        </div>
+      </div>
+    </section>
   )
 }

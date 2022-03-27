@@ -1,1 +1,2 @@
-export { Section1 } from './Home'
+export { Section1, Section2 } from './Home'
+export { Header } from './Header'

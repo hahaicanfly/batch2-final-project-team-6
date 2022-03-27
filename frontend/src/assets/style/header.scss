@@ -1,0 +1,25 @@
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 115px;
+      height: 115px;
+    }
+  }
+
+  &-right {
+    
+  }
+}
