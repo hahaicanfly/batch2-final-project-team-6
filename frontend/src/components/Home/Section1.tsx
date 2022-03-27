@@ -7,7 +7,7 @@ export const Section1 = () => {
       <Header />
 
       <div className="flex-justify flex-column">
-        <h1 className="title">Trust News</h1>
+        <h1 className="title linear-text">Trust News</h1>
         <span>The Best SocialFi Info Platform
           <br />
           便捷、去中心化，為信任的資訊提供平台

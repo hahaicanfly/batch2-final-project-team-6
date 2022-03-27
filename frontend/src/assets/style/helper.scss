@@ -6,6 +6,10 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  
+  @media screen and (min-width: 1200px){
+    max-width: 1000px;
+  }
 }
 
 .flex-justify {
@@ -24,9 +28,8 @@
   flex-direction: row;
 }
 
-.col-6 {
-  width: 50%;
-}
+.col-6 { width: 50%; }
+.col-4 { width: 33.3%; }
 
 .btn {
   position: relative;

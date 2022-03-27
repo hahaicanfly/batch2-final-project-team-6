@@ -1,4 +1,4 @@
-import { Section1, Section2 } from './components'
+import { Section1, Section2, Section3 } from './components'
 
 import './assets/style/reset.css'
 import './assets/style/helper.scss'
@@ -10,6 +10,7 @@ export const App = () => {
     <>
       <Section1 />
       <Section2 />
+      <Section3 />
     </>
   )
 }
