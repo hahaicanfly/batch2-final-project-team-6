@@ -22,21 +22,20 @@ export const Header = () => {
       </Link>
 
       <div className="nav-right">
-        <button className="btn">
-          <Link to="/posts">
-            文章列表
-          </Link>
-        </button>
-
-        {
-          accountData?.address ?
-            <button className="btn">發表文章</button>
-            : <></>
-        }
         {
           !accountData?.address ?
             <ConnectWallet /> :
             <div>
+              <button className="btn">
+                <Link to="/post/create">
+                  發表文章
+                </Link>
+              </button>
+              <button className="btn">
+                <Link to="/posts">
+                  文章列表
+                </Link>
+              </button>
               <button className="btn btn-border">
                 {accountData?.address}
               </button>
