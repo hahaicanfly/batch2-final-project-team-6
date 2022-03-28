@@ -14,6 +14,11 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: $primary;
+}
+
 .linear-text {
   background: $linear;
   -webkit-background-clip: text;
