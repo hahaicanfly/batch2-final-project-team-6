@@ -31,7 +31,7 @@ body {
 }
 
 .section1 .title {
-  font-size: 10rem;
+  font-size: 7rem;
   line-height: 14.7rem;
 }
 
@@ -40,6 +40,16 @@ section span {
   font-size: 20px;
   line-height: 30px;
   text-align: center;
+}
+
+
+/* Section */
+.section2, .section3, .section4, .section5, .section6 {
+  .info {
+    margin-bottom: 5rem;
+  }
+
+  padding: 10rem 0;
 }
 
 
@@ -59,21 +69,14 @@ section span {
   }
 }
 
-/* Section2 */
-.section2, .section3, .section4 {
-  .info {
-    margin-bottom: 5rem;
-  }
-
-  padding: 10rem 0;
+.btn-list .btn {
+  font-size: 1.8rem;
+  margin-top: 2rem;
 }
+
 
 /* Section3 */
 .section3 {
-  .info {
-    margin-bottom: 5rem;
-  }
-
 
   .box {
     position: relative;
@@ -133,5 +136,15 @@ section span {
 .section4 {
   &-content {
     height: 500px;
+  }
+}
+
+.section5 {
+  .info {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    height: 100%;
   }
 }

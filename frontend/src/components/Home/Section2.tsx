@@ -5,7 +5,7 @@ export const Section2 = () => {
     <section className="section2">
       <div className="container">
         <div className="row">
-          <div className="col-6">
+          <div className="col-6 flex-justify">
             <img className="img-fluid" src={ItemImg} alt="Item" />
           </div>
           <div className="col-6 flex-justify">

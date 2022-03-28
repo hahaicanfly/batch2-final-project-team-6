@@ -1,9 +1,9 @@
-import { Section1, Section2, Section3, Section4 } from './components'
+import { Section1, Section2, Section3, Section4, Section5 } from './components'
 
 import './assets/style/reset.css'
+// import './assets/style/_mixins.scss'
 import './assets/style/helper.scss'
 import './assets/style/home.scss'
-import './assets/style/function.scss'
 
 export const App = () => {
   return (
@@ -12,6 +12,7 @@ export const App = () => {
       <Section2 />
       <Section3 />
       <Section4 />
+      <Section5 />
     </>
   )
 }

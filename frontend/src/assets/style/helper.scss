@@ -3,14 +3,26 @@
   height: auto
 }
 
+// Usage
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  
-  @media screen and (min-width: 1200px){
-    max-width: 1000px;
+  @include make-container();
+  @media screen and (min-width: 1400px) {
+    max-width: 1320px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    max-width: 1140px;
+  }
+
+
+  @media screen and (max-width: 767px) {
+    max-width: 960px;
   }
 }
+// .container {
+//   max-width: 760px;
+//   margin: 0 auto;
+// }
 
 .flex-justify {
   display: flex;
@@ -32,7 +44,9 @@
   flex-direction: row;
 }
 
+.col-7 { width: 58%; }
 .col-6 { width: 50%; }
+.col-5 { width: 42%; }
 .col-4 { width: 33.3%; }
 
 .btn {

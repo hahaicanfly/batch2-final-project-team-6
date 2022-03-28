@@ -11,7 +11,7 @@ export const Section3 = () => {
           <span>Explore the features!</span>
         </div>
         <div className="row">
-          <div className="col-4">
+          <div className="col-4 flex-justify">
             <div className="box">
               <div className="box-content">
                 <img src={Icon1} alt="icon1" />
@@ -19,7 +19,7 @@ export const Section3 = () => {
               </div>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-4 flex-justify">
             <div className="box">
               <div className="box-content">
                 <img src={Icon2} alt="icon2" />
@@ -28,7 +28,7 @@ export const Section3 = () => {
             </div>
           </div>
 
-          <div className="col-4">
+          <div className="col-4 flex-justify">
             <div className="box">
               <div className="box-content">
                 <img src={Icon3} alt="icon3" />
