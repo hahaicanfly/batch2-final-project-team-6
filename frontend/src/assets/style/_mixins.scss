@@ -39,3 +39,41 @@ $container-padding-x: 15px;
   margin-right: auto;
   margin-left: auto;
 }
+
+@mixin linear-area($width, $height) {
+  position: relative;
+  width: $width;
+  height: $height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+  font-size: 3.2rem;
+
+  &:before {
+    content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      border-radius: 50px;
+      padding: 3px;
+      background: linear-gradient(90deg, #00F0FF 0%, #5773FF 46.87%, #FF007A 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+
+  &:after {
+    content: '';
+    background: #1F1B42;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    top: 0;
+    left: 0;
+  }
+}

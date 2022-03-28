@@ -4,6 +4,7 @@ import './assets/style/reset.css'
 // import './assets/style/_mixins.scss'
 import './assets/style/helper.scss'
 import './assets/style/home.scss'
+import './assets/style/post.scss'
 
 export const App = () => {
   return (

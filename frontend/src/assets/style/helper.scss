@@ -6,6 +6,15 @@
 // Usage
 .container {
   @include make-container();
+
+  @media screen and (min-width: 900px) {
+    max-width: 860px;
+  }
+
+  @media screen and (max-width: 767px) {
+    max-width: 960px;
+  }
+  
   @media screen and (min-width: 1400px) {
     max-width: 1320px;
   }
@@ -15,9 +24,6 @@
   }
 
 
-  @media screen and (max-width: 767px) {
-    max-width: 960px;
-  }
 }
 // .container {
 //   max-width: 760px;
