@@ -44,7 +44,7 @@ section span {
 
 
 /* Section */
-.section2, .section3, .section4, .section5, .section6, .section7 {
+.section2, .section3, .section4, .section5, .section6, .section7, .section8 {
   .info {
     margin-bottom: 5rem;
   }
@@ -77,6 +77,9 @@ section span {
 
 /* Section3 */
 .section3, .section6, .section7 {
+  .info .title {
+    width: 30%;
+  }
 
   .box {
     position: relative;
@@ -211,5 +214,24 @@ section span {
       font-weight: 400;
       margin-top: 0;
     }
+  }
+}
+
+.section8 {
+  .info .title {
+    width: 30%;
+    margin: 0 auto;
+  }
+
+  ul {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    letter-spacing: 1px;
+    list-style: decimal;
+    padding-left: 2rem;
+  }
+
+  .col-3 {
+    align-items: start;
   }
 }
