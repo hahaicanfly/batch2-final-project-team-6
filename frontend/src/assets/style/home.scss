@@ -76,7 +76,7 @@ section span {
 
 
 /* Section3 */
-.section3 {
+.section3, .section6 {
 
   .box {
     position: relative;
@@ -147,4 +147,22 @@ section span {
     flex-direction: column;
     height: 100%;
   }
+}
+
+.section6 {
+  .box {
+    width: 100%;
+    height: 30rem;
+    padding: 0 8rem;
+
+    &-content {
+      align-items: start;
+
+      span {
+        text-align: left;
+      }
+    }
+  }
+
+  
 }

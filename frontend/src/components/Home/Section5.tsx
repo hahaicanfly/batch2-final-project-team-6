@@ -8,7 +8,7 @@ export const Section5 = () => {
           <div className="col-7">
             <div className="info">
               <div className="title linear-text">用行動支持創作者</div>
-              <span>讓創意能夠盡情揮灑！一起為打造更好的社會及媒體環境努力</span>
+              <span className="text-left">讓創意能夠盡情揮灑！一起為打造更好的社會及媒體環境努力</span>
               <div className="btn-list">
                 <button className="btn btn-border">
                   贊助創作者
