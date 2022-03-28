@@ -10,5 +10,8 @@ export default defineConfig({
       }
     }
   },
-  plugins: [react()]
+  plugins: [react()],
+  optimizeDeps: {
+    exclude: ['ipfs-http-client', 'electron-fetch']
+  }
 })
