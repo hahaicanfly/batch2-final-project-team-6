@@ -1,0 +1,27 @@
+.post-list {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.post {
+  @include linear-area(100%, 200px);
+  margin-bottom: 2rem;
+  justify-content: space-around;
+
+  &-info, &-btn {
+    position: relative;
+    z-index: 1;
+  }
+
+  &-info {
+    
+    h2 {
+
+    }
+    span {
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+}
