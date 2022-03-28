@@ -60,7 +60,11 @@ section span {
 }
 
 /* Section2 */
-.section2, .section3 {
+.section2, .section3, .section4 {
+  .info {
+    margin-bottom: 5rem;
+  }
+
   padding: 10rem 0;
 }
 
@@ -114,6 +118,7 @@ section span {
 
       display: flex;
       flex-direction: column;
+      align-items: center;
       
       img {
         width: 70px;
@@ -122,5 +127,11 @@ section span {
         margin-top: 1rem;
       }
     }
+  }
+}
+
+.section4 {
+  &-content {
+    height: 500px;
   }
 }
