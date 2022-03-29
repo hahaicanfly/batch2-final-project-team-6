@@ -7,7 +7,7 @@ import {
   Routes,
 } from "react-router-dom";
 
-// import { PostList, CreatePost } from './components'
+import { PostList, CreatePost } from './components'
 import { Provider } from 'wagmi'
 
 
@@ -18,8 +18,8 @@ ReactDOM.render(
         <Router>
           <Routes>
             <Route path="/" element={<App />} />
-            {/* <Route path="/posts" element={<PostList />} /> */}
-            {/* <Route path="/post/create" element={<CreatePost />} /> */}
+            <Route path="/posts" element={<PostList />} />
+            <Route path="/post/create" element={<CreatePost />} />
           </Routes>
         </Router>
       </Provider>

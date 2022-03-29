@@ -13,7 +13,6 @@ import { ethers } from 'ethers'
 const ipfs = create('https://ipfs.infura.io:5001/api/v0');
 
 export const GetToken = () => {
-  // const ipfs = window.IpfsHttpClient.create({ host: 'https://ipfs.infura.io:5001/api/v0', port: 5001 })
   const provider = useProvider()
 
 
@@ -82,14 +81,10 @@ export const GetToken = () => {
     });
     const uploaded = await ipfs.add(stringJSON);
     console.log(uploaded)
-    // const gasPrice = 0
-    console.log('123')
     let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
     let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
     console.error('bytes32First', bytes32First)
     console.error('bytes32Sec', bytes32Sec)
-    // console.error("writeContracts", writeContracts);
-    // console.error("writeContracts YourCollectible", writeContracts.YourCollectible);
     // tx(writeContracts.YourCollectible.postThread(bytes32First, bytes32Sec, { gasPrice }));
     // const result = await postThread(bytes32First, bytes32Sec)
   };
