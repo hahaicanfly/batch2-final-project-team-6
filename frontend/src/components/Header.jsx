@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { useConnect, useAccount } from 'wagmi'
 // Components
-import { ConnectWallet } from '../components'
+import { ConnectWallet } from '.'
 // Assets
 import '../assets/style/header.scss'
 import Logo from '../assets/images/TrustNews-logos.png'
@@ -26,11 +26,11 @@ export const Header = () => {
           !accountData?.address ?
             <ConnectWallet /> :
             <div>
-              <button className="btn">
+              {/* <button className="btn">
                 <Link to="/post/create">
                   發表文章
                 </Link>
-              </button>
+              </button> */}
               <button className="btn">
                 <Link to="/posts">
                   文章列表

@@ -1,3 +1,6 @@
+@use './_mixins';
+
+
 .img-fluid {
   max-width: 100%;
   height: auto
@@ -5,7 +8,7 @@
 
 // Usage
 .container {
-  @include make-container();
+  @include mixins.make-container();
 
   @media screen and (min-width: 900px) {
     max-width: 860px;

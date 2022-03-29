@@ -6,15 +6,16 @@ import {
   useContractWrite,
 } from "wagmi";
 // IPFS
-import { create } from "ipfs-http-client";
-const client = create('https://ipfs.infura.io:5001/api/v0');
-
+import { create } from 'ipfs-http-client'
 // Contract
 import { gt_token, ut_token, post_contract } from '../config/contract'
 import { ethers } from 'ethers'
+const ipfs = create('https://ipfs.infura.io:5001/api/v0');
 
 export const GetToken = () => {
+  // const ipfs = window.IpfsHttpClient.create({ host: 'https://ipfs.infura.io:5001/api/v0', port: 5001 })
   const provider = useProvider()
+
 
   const [{ data, error, loading }, getThreadOwner] = useContractWrite(
     {
@@ -39,7 +40,6 @@ export const GetToken = () => {
   )
 
   const getOwner = async () => {
-    console.log(12312)
     const result = await getThreadOwner({
       args: [1],
     })
@@ -51,6 +51,7 @@ export const GetToken = () => {
     console.log(result)
   }
 
+  // connect to a different API
   const uploadFile = async () => {
     const stringJSON = JSON.stringify({
       name: "article2",
@@ -79,8 +80,10 @@ export const GetToken = () => {
         },
       ],
     });
-    const uploaded = await client.add(stringJSON);
-    const gasPrice = 0
+    const uploaded = await ipfs.add(stringJSON);
+    console.log(uploaded)
+    // const gasPrice = 0
+    console.log('123')
     let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
     let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
     console.error('bytes32First', bytes32First)
