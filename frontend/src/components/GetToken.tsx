@@ -6,8 +6,9 @@ import {
   useContractWrite,
 } from "wagmi";
 // IPFS
-const ipfsAPI = require("ipfs-http-client");
-const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
+import { create } from "ipfs-http-client";
+const client = create('https://ipfs.infura.io:5001/api/v0');
+
 // Contract
 import { gt_token, ut_token, post_contract } from '../config/contract'
 import { ethers } from 'ethers'
@@ -78,14 +79,16 @@ export const GetToken = () => {
         },
       ],
     });
-    const uploaded = await ipfs.add(stringJSON);
+    const uploaded = await client.add(stringJSON);
     const gasPrice = 0
     let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
     let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
+    console.error('bytes32First', bytes32First)
+    console.error('bytes32Sec', bytes32Sec)
     // console.error("writeContracts", writeContracts);
     // console.error("writeContracts YourCollectible", writeContracts.YourCollectible);
     // tx(writeContracts.YourCollectible.postThread(bytes32First, bytes32Sec, { gasPrice }));
-    const result = await postThread(bytes32First, bytes32Sec)
+    // const result = await postThread(bytes32First, bytes32Sec)
   };
 
   return (
