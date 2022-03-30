@@ -1,5 +1,5 @@
 ## KryptoCamp Session2 Team6 RoadMap v0
-
+![Cover](./cover.png)
 # TrustNews Dao
 
 編輯歷程
