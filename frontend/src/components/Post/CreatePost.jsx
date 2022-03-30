@@ -1,4 +1,20 @@
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button } from 'antd';
+import {
+  useProvider,
+  useContract,
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction
+} from "wagmi";
+import Swal from 'sweetalert2'
+import { ethers } from 'ethers'
+// IPFS
+import { create } from 'ipfs-http-client'
+// Contract
+import { post_contract } from '../../config/contract'
+import { Header } from '../Header'
+const ipfs = create('https://ipfs.infura.io:5001/api/v0');
 
 const tailLayout = {
   wrapperCol: {
@@ -8,12 +24,12 @@ const tailLayout = {
 };
 
 export const CreatePost = () => {
-
+  const provider = useProvider()
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
+  const [{ data: accountData }] = useAccount({
+    fetchEns: true,
+  });
 
   const onReset = () => {
     form.resetFields();
@@ -26,8 +42,79 @@ export const CreatePost = () => {
     });
   };
 
+  const [{ }, postThread] = useContractWrite(
+    {
+      addressOrName: post_contract.address,
+      contractInterface: post_contract.abi,
+      signerOrProvider: provider,
+    },
+    "postThread"
+  );
+
+  const [{ }, wait] = useWaitForTransaction({
+    hash: ''
+  })
+
+  const onFinish = async ({ title, description }) => {
+    console.log(title, description);
+
+    let today = new Date()
+    today = today.toISOString().split('T')[0]
+    console.log(today)
+
+    const item = JSON.stringify({
+      name: 'Article',
+      image: [
+        {
+          authorName: "henry",
+          content: description,
+          timeStamp: today,
+          cover: "https://austingriffith.com/images/paintings/fish.jpg",
+        },
+      ]
+    })
+
+    // 上傳至 IPFS
+    const uploaded = await ipfs.add(item)
+    console.error('已上傳IPFS: ', uploaded)
+
+    // 給 postThread 的參數
+    let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
+    let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
+
+    // 呼叫智能合約
+    const { data, error } = await postThread({
+      args: [bytes32First, bytes32Sec],
+      overrides: {
+        gasLimit: 203000,
+        gasPrice: 60000000000,
+      },
+    })
+
+    console.log(data)
+    const hash = data.hash
+
+    if (hash) {
+      Swal.fire({
+        icon: 'info',
+        title: '成功送出交易...',
+        text: `https://rinkeby.etherscan.io/tx/${hash}`,
+      })
+    }
+
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '發生錯誤',
+        text: `${error.reason || error.message}`,
+      })
+    }
+
+  };
+
   return (
     <div className="create-post">
+      <Header />
       <div className="container">
         <Form form={form} name="control-hooks" onFinish={onFinish}>
           <Form.Item
@@ -42,7 +129,7 @@ export const CreatePost = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="content"
+            name="description"
             label="文章內容"
             rules={[
               {
@@ -53,15 +140,15 @@ export const CreatePost = () => {
             <Input />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button htmlType="button" onClick={onReset}>
-              Reset
-            </Button>
-            <Button type="link" htmlType="button" onClick={onFill}>
-              Fill form
-            </Button>
+            <button className="btn btn-border" type="submit">
+              送出
+            </button>
+            <button className="btn btn-border" onClick={onReset}>
+              重置
+            </button>
+            <button className="btn btn-border" onClick={onFill}>
+              自動填寫
+            </button>
           </Form.Item>
         </Form>
       </div>
