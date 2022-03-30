@@ -57,6 +57,7 @@
     "sweetalert2": "^11.4.8",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
+    "util": "^0.12.4",
     "wagmi": "^0.2.23",
     "web-vitals": "^2.1.4",
     "webpack": "^5.64.4",

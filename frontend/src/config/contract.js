@@ -13,6 +13,6 @@ export const ut_token = {
 }
 
 export const post_contract = {
-  address: '0x8189D7C355B0116CB261FE47E4B170B938Fd940f',
+  address: '0x8189d7c355b0116cb261fe47e4b170b938fd940f',
   abi: YourCollectibleAbi.abi
 }
