@@ -1,5 +1,6 @@
 ## KryptoCamp Session2 Team6 RoadMap v0
 
+![Cover](./cover.png)
 # TrustNews Dao
 
 編輯歷程
@@ -18,7 +19,6 @@
 嘗試利用代幣經濟製造一個用用戶與社群間的正向互動模式，並且藉由去中心化自治的途徑，逐步發展成為值得信任的自治性組織TrustNews Dao。
 
 ----
-
 
 # RoadMap
 
