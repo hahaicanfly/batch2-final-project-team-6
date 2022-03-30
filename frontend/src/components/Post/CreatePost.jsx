@@ -9,11 +9,13 @@ import {
 } from "wagmi";
 import Swal from 'sweetalert2'
 import { ethers } from 'ethers'
-// IPFS
-import { create } from 'ipfs-http-client'
 // Contract
 import { post_contract } from '../../config/contract'
+// IPFS
+import { create } from 'ipfs-http-client'
+// Component
 import { Header } from '../Header'
+
 const ipfs = create('https://ipfs.infura.io:5001/api/v0');
 
 const tailLayout = {
