@@ -44,7 +44,7 @@ export const Header = () => {
               </button> */}
               <button className="btn btn-border">
                 {accountData?.address}
-                Balance: {`${Number(getBalance?.formatted).toFixed(3)} ETH`}
+                {/* Balance: {`${Number(getBalance?.formatted).toFixed(3)} ETH`} */}
               </button>
               <button
                 className="btn btn-border"
