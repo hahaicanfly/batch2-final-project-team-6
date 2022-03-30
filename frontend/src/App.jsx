@@ -8,9 +8,9 @@ import {
 } from './components/index'
 
 import './assets/style/reset.css'
+import 'antd/dist/antd.css';
 import './assets/style/_mixins.scss'
 import './assets/style/helper.scss'
-import 'antd/dist/antd.css';
 import './assets/style/home.scss'
 import './assets/style/post.scss'
 
