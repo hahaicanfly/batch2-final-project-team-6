@@ -1,16 +1,22 @@
 // Utils
 import { Link } from "react-router-dom";
-import { useConnect, useAccount } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 // Components
-import { ConnectWallet } from '../components'
+import { ConnectWallet } from '.'
 // Assets
 import '../assets/style/header.scss'
 import Logo from '../assets/images/TrustNews-logos.png'
 
 export const Header = () => {
-  const [{ data: accountData, loading }, disconnect] = useAccount({
+  // Connected account details
+  const [{ data: accountData }, disconnect] = useAccount({
     fetchEns: true,
   })
+
+  // Fetching balance information
+  const [{ data: getBalance }] = useBalance({
+    addressOrName: accountData?.address,
+  });
 
   return (
     <header className="nav">
@@ -22,23 +28,23 @@ export const Header = () => {
       </Link>
 
       <div className="nav-right">
-        <button className="btn">
-          <Link to="/posts">
-            文章列表
-          </Link>
-        </button>
-
-        {
-          accountData?.address ?
-            <button className="btn">發表文章</button>
-            : <></>
-        }
         {
           !accountData?.address ?
             <ConnectWallet /> :
             <div>
+              {/* <button className="btn">
+                <Link to="/post/create">
+                  發表文章
+                </Link>
+              </button> */}
+              {/* <button className="btn">
+                <Link to="/posts">
+                  文章列表
+                </Link>
+              </button> */}
               <button className="btn btn-border">
                 {accountData?.address}
+                {/* Balance: {`${Number(getBalance?.formatted).toFixed(3)} ETH`} */}
               </button>
               <button
                 className="btn btn-border"

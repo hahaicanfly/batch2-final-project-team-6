@@ -1,6 +1,7 @@
 import { useConnect } from 'wagmi'
 
 export const ConnectWallet = () => {
+  // Wallet connect function
   const [{ data, error }, connect] = useConnect()
 
   return (

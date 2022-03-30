@@ -1,3 +1,6 @@
+@use './_mixins';
+
+
 .img-fluid {
   max-width: 100%;
   height: auto
@@ -5,7 +8,7 @@
 
 // Usage
 .container {
-  @include make-container();
+  @include mixins.make-container();
 
   @media screen and (min-width: 900px) {
     max-width: 860px;
@@ -74,14 +77,13 @@
 
 .btn {
   position: relative;
-  padding: 12px 40px;
+  padding: 12px 36px;
   margin: 5px;
   display: inline-block;
   color: #fff;
   background: none;
   border: 0;
-
-  
+  font-size: 1.8rem;
 
   &:hover {
     cursor: pointer;
