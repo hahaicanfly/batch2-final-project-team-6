@@ -37,13 +37,6 @@ export const CreatePost = () => {
     form.resetFields();
   };
 
-  const onFill = () => {
-    form.setFieldsValue({
-      note: 'Hello world!',
-      gender: 'male',
-    });
-  };
-
   const [{ }, postThread] = useContractWrite(
     {
       addressOrName: post_contract.address,
@@ -147,9 +140,6 @@ export const CreatePost = () => {
             </button>
             <button className="btn btn-border" onClick={onReset}>
               重置
-            </button>
-            <button className="btn btn-border" onClick={onFill}>
-              自動填寫
             </button>
           </Form.Item>
         </Form>
