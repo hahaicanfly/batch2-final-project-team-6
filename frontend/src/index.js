@@ -23,30 +23,30 @@ const chains = [chain.hardhat, ...defaultChains];
 const defaultChain = chain.rinkeby;
 
 // Set up connectors
-const connectors = ({ chainId }) => {
-  console.log(chainId)
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    defaultChain.rpcUrls[0];
-  // const rpcUrl = 'https://rinkeby.infura.io/v3'
-  return [
-    new InjectedConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        infuraId,
-        qrcode: true,
-      },
-    }),
-    new WalletLinkConnector({
-      chains,
-      options: {
-        appName: "wagmi",
-        jsonRpcUrl: `${rpcUrl}/${infuraId}`,
-      },
-    }),
-  ];
-};
+// const connectors = ({ chainId }) => {
+//   console.log(chainId)
+//   const rpcUrl =
+//     chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
+//     defaultChain.rpcUrls[0];
+//   // const rpcUrl = 'https://rinkeby.infura.io/v3'
+//   return [
+//     new InjectedConnector({ chains }),
+//     new WalletConnectConnector({
+//       chains,
+//       options: {
+//         infuraId,
+//         qrcode: true,
+//       },
+//     }),
+//     new WalletLinkConnector({
+//       chains,
+//       options: {
+//         appName: "wagmi",
+//         jsonRpcUrl: `${rpcUrl}/${infuraId}`,
+//       },
+//     }),
+//   ];
+// };
 
 const provider = ({ chainId }) =>
   new providers.InfuraProvider(chainId, infuraId)
