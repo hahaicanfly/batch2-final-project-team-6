@@ -16,7 +16,7 @@ import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 
 // API key for Ethereum node
 // services are Infura (infura.io)
-const infuraId = process.env.INFURA_ID;
+const infuraId = process.env.REACT_APP_INFURA_ID;
 
 // Chains for connectors to support
 const chains = [chain.hardhat, ...defaultChains];
@@ -48,25 +48,15 @@ const connectors = ({ chainId }) => {
   ];
 };
 
-// Set up providers
-const provider = ({ chainId, connector }) =>
-  chainId == 31337
-    ? new providers.JsonRpcProvider(
-      connector?.chains.find((x) => x.id == 31337)?.rpcUrls[0]
-    )
-    : providers.getDefaultProvider(
-      defaultChain.id,
-      {
-        infuraId,
-      }
-    );
+const provider = ({ chainId }) =>
+  new providers.InfuraProvider(chainId, infuraId)
+
 
 
 ReactDOM.render(
   <React.StrictMode>
     <>
-      {/* <Provider autoConnect connectors={connectors} provider={provider}> */}
-      <Provider>
+      <Provider autoConnect provider={provider}>
         <Router>
           <Routes>
             <Route path="/" element={<App />} />
