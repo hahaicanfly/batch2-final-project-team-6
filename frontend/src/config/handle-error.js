@@ -7,3 +7,11 @@ export const handleError = ({ reason = '發生無法預期的錯誤', message = 
     text: `${reason || message}`,
   })
 }
+
+export const showConnectWallet = () => {
+  Swal.fire({
+    icon: 'info',
+    title: '提醒',
+    text: `請先連接錢包`,
+  })
+}

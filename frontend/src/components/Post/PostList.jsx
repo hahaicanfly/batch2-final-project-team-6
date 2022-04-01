@@ -11,10 +11,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { handleError } from '../../config/handle-error'
 // Contract
 import { post_contract } from '../../config/contract'
-import { getFromIPFS } from '../../config/ipfs'
 // IPFS
-// const ipfsAPI = require("ipfs-http-client");
-// const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
+import { getFromIPFS } from '../../config/ipfs'
+import { NoData } from './NoData'
 
 export const PostList = () => {
   const [loadedAssets, setLoadedAssets] = useState([])
@@ -29,17 +28,6 @@ export const PostList = () => {
     contractInterface: post_contract.abi,
     signerOrProvider: provider,
   }
-
-
-
-  const postList = [
-    { title: '文章', description: '這是文章描述描述描述' },
-    { title: '文章', description: '這是文章描述描述描述' },
-    { title: '文章', description: '這是文章描述描述描述' },
-    { title: '文章', description: '這是文章描述描述描述' },
-    { title: '文章', description: '這是文章描述描述描述' },
-    { title: '文章', description: '這是文章描述描述描述' },
-  ]
 
   const [{ }, getTotalThreadCount] = useContractRead(
     {
@@ -80,7 +68,11 @@ export const PostList = () => {
 
 
   const getPostList = async () => {
-    console.error('[getPostList]')
+    if (!accountData) {
+      console.error('[getPostList] 沒有accountData', accountData)
+      return
+    }
+
     try {
       const { data, error } = await getTotalThreadCount()
       const countNumber = parseInt(data._hex) // 5
@@ -122,7 +114,6 @@ export const PostList = () => {
         }
 
         setLoadedAssets(topicList);
-        console.log(loadedAssets)
       }
 
     } catch (error) {
@@ -135,15 +126,19 @@ export const PostList = () => {
     }
   }
 
-  const giveGood = async () => {
-
+  // 給予讚
+  const giveGood = async (threadId) => {
+    const { data, error } = await giveThreadOneGood({
+      args: [threadId]
+    })
+    console.log(data, error)
   }
 
-
   // useEffect(() => {
-  // console.log(accountData)
-  // getPostList()
-  // }, [accountData])
+  //   console.log('useEffect', accountData)
+  //   getPostList()
+  //   // }, [accountData])
+  // }, [])
 
 
   return (
@@ -152,31 +147,30 @@ export const PostList = () => {
       <div className="post-list">
         <div className="container">
           {
-            // loadedAssets.length === 0 && !accountData?.address
-            //   ? <div>
-            //     無資料
-            //   </div>
-            //   :
-            loadedAssets?.map((post, index) => (
-              post.image.map((img, i) => (
-                <div className="box post" key={index}>
-                  <div className="post-info">
-                    <h2 className="linear-text">
-                      {post.name}
-                    </h2>
-                    <span>
-                      {img.content}
-                    </span>
+            !accountData
+              ? <NoData />
+              :
+              loadedAssets?.map((post, index) => (
+                post.image.map((img, i) => (
+                  <div className="box post" key={index}>
+                    <div className="post-info">
+                      <h2 className="linear-text">
+                        {post.name}
+                      </h2>
+                      <span>
+                        {img.content}
+                      </span>
+                    </div>
+                    <div className="post-btn">
+                      <button className="btn btn-border" onClick={giveGood(post.threadId)}>
+                        {/* <button className="btn btn-border" onClick={giveGood()}> */}
+                        {/* <button className="btn btn-border"> */}
+                        讚啦
+                      </button>
+                    </div>
                   </div>
-                  <div className="post-btn">
-                    <button className="btn btn-border" onClick={getPostList}>
-                      閱讀
-                    </button>
-                    <button onClick={giveGood}>讚</button>
-                  </div>
-                </div>
+                ))
               ))
-            ))
           }
         </div>
       </div>
