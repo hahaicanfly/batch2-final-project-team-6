@@ -1,4 +1,4 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 import {
   useProvider,
   useContract,
@@ -12,11 +12,10 @@ import { ethers } from 'ethers'
 // Contract
 import { post_contract } from '../../config/contract'
 // IPFS
-import { create } from 'ipfs-http-client'
+import { ipfs } from '../../config/ipfs'
 // Component
 import { Header } from '../Header'
 
-const ipfs = create('https://ipfs.infura.io:5001/api/v0');
 
 const tailLayout = {
   wrapperCol: {
@@ -51,14 +50,12 @@ export const CreatePost = () => {
   })
 
   const onFinish = async ({ title, description }) => {
-    console.log(title, description);
-
     let today = new Date()
     today = today.toISOString().split('T')[0]
-    console.log(today)
+
 
     const item = JSON.stringify({
-      name: 'Article',
+      name: title,
       image: [
         {
           authorName: "henry",
@@ -71,7 +68,9 @@ export const CreatePost = () => {
 
     // 上傳至 IPFS
     const uploaded = await ipfs.add(item)
+
     console.error('已上傳IPFS: ', uploaded)
+    console.error(`[IPFS網址] https://ipfs.io/ipfs/${uploaded.path}`)
 
     // 給 postThread 的參數
     let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
@@ -86,16 +85,19 @@ export const CreatePost = () => {
       },
     })
 
-    console.log(data)
-    const hash = data.hash
+    if (data) {
+      console.log(data)
+      const hash = data.hash
 
-    if (hash) {
-      Swal.fire({
-        icon: 'info',
-        title: '成功送出交易...',
-        text: `https://rinkeby.etherscan.io/tx/${hash}`,
-      })
+      if (hash) {
+        Swal.fire({
+          icon: 'info',
+          title: '成功送出交易...',
+          text: `https://rinkeby.etherscan.io/tx/${hash}`,
+        })
+      }
     }
+
 
     if (error) {
       Swal.fire({
