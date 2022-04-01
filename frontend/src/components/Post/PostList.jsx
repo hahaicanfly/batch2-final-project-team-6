@@ -17,9 +17,10 @@ import { NoData } from './NoData'
 
 export const PostList = () => {
   const [loadedAssets, setLoadedAssets] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const provider = useProvider()
-  const [{ data: accountData }, disconnect] = useAccount({
+  const [{ data: accountData }] = useAccount({
     fetchEns: true,
   })
 
@@ -43,14 +44,14 @@ export const PostList = () => {
     'getThreadById',
   )
 
-  const [{ }, getThreadOwner] = useContractWrite(
+  const [{ }, getThreadOwner] = useContractRead(
     {
       ...contractConfig
     },
     "getThreadOwner"
   );
 
-  const [{ }, getThreadGoodCount] = useContractWrite(
+  const [{ }, getThreadGoodCount] = useContractRead(
     {
       ...contractConfig
     },
@@ -64,10 +65,8 @@ export const PostList = () => {
     "giveThreadOneGood"
   );
 
-
-
-
   const getPostList = async () => {
+    console.log('accountData', accountData)
     if (!accountData) {
       console.error('[getPostList] 沒有accountData', accountData)
       return
@@ -76,6 +75,7 @@ export const PostList = () => {
     try {
       const { data, error } = await getTotalThreadCount()
       const countNumber = parseInt(data._hex) // 5
+      console.log('countNumber', countNumber)
 
       const assets = [];
 
@@ -85,6 +85,7 @@ export const PostList = () => {
         // 鏈上資料 byte32 不滿 32 個字元會自動補 0
         // 從鏈上抓下來轉成數字會有奇怪的資料，因此要用 replace 取代 0
         const { data: threadRaw } = await getThreadById({ args: [i] });
+        console.error('[threadRaw]', threadRaw)
 
         const ipfsHash = threadRaw.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, "");
 
@@ -103,19 +104,20 @@ export const PostList = () => {
           threadId: i,
           good: parseInt(count)
         };
-
-        const topicList = [];
-        for (const a in assets) {
-          try {
-            topicList.push({ id: a, ...assets[a] });
-          } catch (e) {
-            console.log(e);
-          }
-        }
-
-        setLoadedAssets(topicList);
       }
 
+      const topicList = [];
+      for (const a in assets) {
+        try {
+          topicList.push({ id: a, ...assets[a] });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      setLoadedAssets(topicList);
+
+      console.log('[loadedAssets]', loadedAssets)
     } catch (error) {
       handleError({ reason: error })
       Swal.fire({
@@ -134,11 +136,10 @@ export const PostList = () => {
     console.log(data, error)
   }
 
-  // useEffect(() => {
-  //   console.log('useEffect', accountData)
-  //   getPostList()
-  //   // }, [accountData])
-  // }, [])
+
+  useEffect(() => {
+    console.log('useEffect', accountData)
+  }, [accountData?.address])
 
 
   return (
@@ -147,30 +148,38 @@ export const PostList = () => {
       <div className="post-list">
         <div className="container">
           {
-            !accountData
-              ? <NoData />
-              :
-              loadedAssets?.map((post, index) => (
-                post.image.map((img, i) => (
-                  <div className="box post" key={index}>
-                    <div className="post-info">
-                      <h2 className="linear-text">
-                        {post.name}
-                      </h2>
-                      <span>
-                        {img.content}
-                      </span>
-                    </div>
-                    <div className="post-btn">
-                      <button className="btn btn-border" onClick={giveGood(post.threadId)}>
-                        {/* <button className="btn btn-border" onClick={giveGood()}> */}
+            accountData?.address
+              ?
+              loadedAssets.length === 0
+                ?
+                <button className="btn btn-border" onClick={getPostList}>取得文章</button>
+                :
+                loadedAssets?.map((post, index) => (
+                  post.image.map((img, i) => (
+                    <div className="box post" key={index}>
+                      <div className="post-info">
+                        <h2 className="linear-text">
+                          {post.name}
+                        </h2>
+                        <span>
+                          {img.content}
+                        </span>
+                      </div>
+                      <div className="post-btn">
+                        <span className="good">
+                          按讚次數 {isNaN(post.good) ? 0 : post?.good}
+                        </span>
+                        {/* <button className="btn btn-border" onClick={giveGood(post.threadId)}> */}
+                        {/* <button className="btn btn-border" onClick={loadedAssets[a].good}> */}
                         {/* <button className="btn btn-border"> */}
-                        讚啦
-                      </button>
+                        {/* 讚啦 */}
+                        {/* </button> */}
+                      </div>
                     </div>
-                  </div>
+                  ))
                 ))
-              ))
+              :
+              <NoData />
           }
         </div>
       </div>
