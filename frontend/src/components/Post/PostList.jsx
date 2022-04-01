@@ -8,7 +8,7 @@ import {
   useContractWrite
 } from "wagmi";
 import React, { useCallback, useEffect, useState } from "react";
-import { handleError } from '../../config/headle-error'
+import { handleError } from '../../config/handle-error'
 // Contract
 import { post_contract } from '../../config/contract'
 import { getFromIPFS } from '../../config/ipfs'
@@ -126,6 +126,7 @@ export const PostList = () => {
       }
 
     } catch (error) {
+      handleError({ reason: error })
       Swal.fire({
         icon: 'error',
         title: '發生錯誤',
