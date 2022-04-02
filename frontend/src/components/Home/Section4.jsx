@@ -1,6 +1,8 @@
 import Tokenomics from '../../assets/images/tokenomatic.png'
 
 export const Section4 = () => {
+  const gitBook = 'https://ho-msho.gitbook.io/untitled/'
+
   return (
     <section className="section4">
       <div className="container">
@@ -8,9 +10,14 @@ export const Section4 = () => {
           <span>Let’s introduce with</span>
           <div className="title linear-text">貨幣經濟</div>
           <div className="btn-list">
-            <button className="btn btn-border">
-              白皮書連結
-            </button>
+            <a
+              href={gitBook}
+              target="_blank"
+            >
+              <button className="btn btn-border">
+                白皮書連結
+              </button>
+            </a>
           </div>
         </div>
         <div className="section4-content">
