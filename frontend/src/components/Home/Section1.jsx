@@ -9,9 +9,9 @@ export const Section1 = () => {
 
       <div className="flex-justify flex-column">
         <h1 className="title linear-text">Trust News</h1>
-        <span>The Best SocialFi Info Platform
+        <span>The Best Socialfi News Platform
           <br />
-          便捷、去中心化，為信任的資訊提供平台
+          便捷、去中心化，為值得信任的資訊提供平台
         </span>
         <div className="btn-list">
           <Link className="nav-left" to="/posts">
