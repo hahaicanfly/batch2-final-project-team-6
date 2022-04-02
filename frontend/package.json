@@ -1,7 +1,7 @@
 {
   "name": "test",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://hazelwu2.github.io/kcrypto-camp-final-project-team/",
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -74,7 +74,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "deploy": "gh-pages -d build",
-    "qq": "git-directory-deploy --directory build --repo hazel"
+    "qq": "yarn build && git-directory-deploy --directory build --repo hazel"
   },
   "eslintConfig": {
     "extends": [
