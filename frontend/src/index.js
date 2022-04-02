@@ -59,7 +59,7 @@ ReactDOM.render(
       <Provider autoConnect provider={provider}>
         <Router basename={process.env.PUBLIC_URL}>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route path="/" exact element={<App />} />
             <Route path="/posts" element={<PostList />} />
             <Route path="/post/create" element={<CreatePost />} />
           </Routes>
