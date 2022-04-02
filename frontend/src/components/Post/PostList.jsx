@@ -78,7 +78,6 @@ export const PostList = () => {
       setLoading(true)
       const { data, error } = await getTotalThreadCount()
       const countNumber = parseInt(data._hex) // 5
-      console.log('countNumber', countNumber)
 
       const assets = [];
 
@@ -96,16 +95,16 @@ export const PostList = () => {
         const jsonManifest = JSON.parse(jsonManifestBuffer);
 
         // 取得文章作者
-        let owner = await getThreadOwner({ args: [i] })
+        let { data: owner } = await getThreadOwner({ args: [i] })
         // 取得文章按讚次數
-        let count = await getThreadGoodCount({ args: [i] })
+        let { data } = await getThreadGoodCount({ args: [i] })
 
         // 組合資料
         assets[ipfsHash] = {
           ...jsonManifest,
           owner,
           threadId: i,
-          good: parseInt(count)
+          good: parseInt(data._hex)
         };
       }
 
@@ -172,19 +171,33 @@ export const PostList = () => {
                       <h2 className="linear-text">
                         {post.name}
                       </h2>
-                      <span>
+                      {/* <span>
                         {img.content}
-                      </span>
+                      </span> */}
                     </div>
                     <div className="post-btn">
+                      <span className="author">
+                        作者 {img.authorName}
+                      </span>
+                      <span className="wallet">
+                        錢包 {(post.owner).substring(0, 7)}
+                      </span>
+                      <span className="datetime">
+                        {img.timeStamp}
+                      </span>
                       <span className="good">
                         按讚次數 {isNaN(post.good) ? 0 : post?.good}
                       </span>
-                      {/* <button className="btn btn-border" onClick={giveGood(post.threadId)} /> */}
-                      {/* <button className="btn btn-border" onClick={loadedAssets[a].good}> */}
-                      {/* <button className="btn btn-border"> */}
-                      {/* 讚啦 */}
-                      {/* </button> */}
+                      <button className="good-btn btn btn-border" onClick={() => {
+                        giveGood(post.threadId)
+                      }}>
+                        按讚
+                      </button>
+                      <button className="good-btn btn btn-border" onClick={() => {
+                        console.log('test', post.threadId)
+                      }}>
+                        閱讀
+                      </button>
                     </div>
                   </div>
                 ))

@@ -8,11 +8,18 @@
 .post {
   @include mixins.linear-area(100%, 200px);
   margin-bottom: 2rem;
-  justify-content: space-around;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  padding: 20px 25px;
+
 
   &-info, &-btn {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   &-info {
@@ -26,6 +33,26 @@
       line-height: 30px;
     }
   }
+
+  &-btn {
+    width: 100%;
+    position: absolute;
+    bottom: 18px;
+    left: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span {
+      display: block;
+      margin-right: 15px;
+    }
+  }
+
+  .good-btn {
+    font-size: 1.2rem;
+    padding: 12px 28px;
+  }
 }
 
 .ant-form-item-label > label {
@@ -36,4 +63,9 @@
   font-size: 1.4rem;
   font-weight: 300;
   letter-spacing: 1px;
+}
+
+.datetime, .author, .wallet {
+  font-weight: 300;
+  font-size: 1.4rem;
 }
