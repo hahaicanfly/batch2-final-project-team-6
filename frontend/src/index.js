@@ -57,7 +57,7 @@ ReactDOM.render(
   <React.StrictMode>
     <>
       <Provider autoConnect provider={provider}>
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/posts" element={<PostList />} />
