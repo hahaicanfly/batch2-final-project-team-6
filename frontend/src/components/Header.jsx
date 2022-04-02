@@ -23,7 +23,7 @@ export const Header = () => {
       <Link className="nav-left" to="/">
         <img className="img-fluid" src={Logo} alt="" />
         <span>
-          TRUSHNEWS
+          TRUSTNEWS
         </span>
       </Link>
 
@@ -42,15 +42,18 @@ export const Header = () => {
                   文章列表
                 </Link>
               </button> */}
-              <button className="btn btn-border">
-                {accountData?.address}
-                {/* Balance: {`${Number(getBalance?.formatted)} ETH`} */}
-              </button>
-              <button
-                className="btn btn-border"
-                onClick={disconnect}>
-                登出
-              </button>
+              <div>
+                <button className="btn btn-border">
+                  {accountData?.address}
+                  {/* Balance: {`${Number(getBalance?.formatted)} ETH`} */}
+                </button>
+                <button
+                  className="btn btn-border"
+                  onClick={disconnect}>
+                  登出
+                </button>
+
+              </div>
             </div>
         }
       </div>
