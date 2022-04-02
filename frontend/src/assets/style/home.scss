@@ -101,9 +101,9 @@ section span {
 
 /* Section3 */
 .section3, .section6, .section7 {
-  .info .title {
-    width: 30%;
-  }
+  // .info .title {
+    // width: 30%;
+  // }
 
   .box {
     @include mixins.linear-area(30rem, 30rem);
