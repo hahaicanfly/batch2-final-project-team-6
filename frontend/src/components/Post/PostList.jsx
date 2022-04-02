@@ -1,15 +1,17 @@
-import { Header } from '../../components'
 import Swal from 'sweetalert2'
 import { ethers, utils } from 'ethers'
-import Preloader from '../../assets/images/preloader.gif'
+import { Header } from '../../components'
+
 import {
   useProvider,
   useAccount,
   useContractRead,
   useContractWrite
 } from "wagmi";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { handleError } from '../../config/handle-error'
+// Img
+import PreloaderGif from '../../assets/images/preloader.gif'
 // Contract
 import { post_contract } from '../../config/contract'
 // IPFS
@@ -147,14 +149,13 @@ export const PostList = () => {
     <Header />
     <div className="loading">
       <div>
-        <img src={Preloader} />
+        <img src={PreloaderGif} />
         <span>
           Loading Data...
         </span>
       </div>
     </div>
   </>
-
 
   return (
     <>

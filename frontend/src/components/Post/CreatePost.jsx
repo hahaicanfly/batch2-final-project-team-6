@@ -1,4 +1,6 @@
+import React, { useState } from "react";
 import { Form, Input } from 'antd';
+import { useNavigate, useHistory } from "react-router-dom";
 import {
   useProvider,
   useContract,
@@ -15,7 +17,8 @@ import { post_contract } from '../../config/contract'
 // IPFS
 import { ipfs } from '../../config/ipfs'
 // Component
-import { Header } from '../Header'
+import { Header } from '../../components'
+import PreloaderGif from '../../assets/images/preloader.gif'
 
 
 const tailLayout = {
@@ -26,8 +29,10 @@ const tailLayout = {
 };
 
 export const CreatePost = () => {
+  const navigate = useNavigate();
   const provider = useProvider()
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false)
 
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
@@ -67,41 +72,62 @@ export const CreatePost = () => {
       ]
     })
 
+    setLoading(true)
+
     // 上傳至 IPFS
     const uploaded = await ipfs.add(item)
 
     console.error('已上傳IPFS: ', uploaded)
     console.error(`[IPFS網址] https://ipfs.io/ipfs/${uploaded.path}`)
 
-    // 給 postThread 的參數
-    let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
-    let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
 
-    // 呼叫智能合約
-    const { data, error } = await postThread({
-      args: [bytes32First, bytes32Sec],
-      overrides: {
-        gasLimit: 203000,
-        gasPrice: 60000000000,
-      },
-    })
+    try {
+      // 給 postThread 的參數
+      let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
+      let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
 
-    if (data) {
-      console.log(data)
-      const hash = data.hash
+      // 呼叫智能合約
+      const { data, error } = await postThread({
+        args: [bytes32First, bytes32Sec],
+        overrides: {
+          gasLimit: 203000,
+          gasPrice: 60000000000,
+        },
+      })
 
-      if (hash) {
-        Swal.fire({
-          icon: 'info',
-          title: '成功送出交易...',
-          text: `https://rinkeby.etherscan.io/tx/${hash}`,
-        })
+      if (data) {
+        console.log(data)
+        const hash = data.hash
+
+        if (hash) {
+          Swal.fire({
+            icon: 'info',
+            title: '成功送出交易...',
+            text: `https://rinkeby.etherscan.io/tx/${hash}`,
+          })
+          navigate('/posts')
+        }
       }
+
+
+      if (error) handleError(error)
+      setLoading(true)
+    } catch (error) {
+      setLoading(false)
     }
-
-
-    if (error) handleError(error)
   };
+
+  if (loading) return <>
+    <Header />
+    <div className="loading">
+      <div>
+        <img src={PreloaderGif} />
+        <span>
+          Loading Data...
+        </span>
+      </div>
+    </div>
+  </>
 
   return (
     <div className="create-post">
