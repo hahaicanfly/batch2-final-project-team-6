@@ -84,7 +84,7 @@ section span {
   
   .btn-list .btn {
     padding: 16px 55px;
-    font-size: 2.7rem;
+    font-size: 2rem;
     margin-top: 5.8rem;
   }
 
@@ -101,10 +101,6 @@ section span {
 
 /* Section3 */
 .section3, .section6, .section7 {
-  // .info .title {
-    // width: 30%;
-  // }
-
   .box {
     @include mixins.linear-area(30rem, 30rem);
 
