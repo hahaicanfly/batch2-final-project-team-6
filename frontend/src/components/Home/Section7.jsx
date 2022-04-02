@@ -1,5 +1,10 @@
 import Icon1 from '../../assets/images/section3-icon1.svg'
 import Hazel from '../../assets/images/hazel.png'
+import Henry from '../../assets/images/Henry.jpg'
+import Archer from '../../assets/images/Archer.jpg'
+import Osmond from '../../assets/images/Osmond.jpg'
+import David from '../../assets/images/David.jpg'
+import Avery from '../../assets/images/Avery.jpg'
 
 export const Section7 = () => {
   const teamList = [
@@ -10,27 +15,27 @@ export const Section7 = () => {
     },
     {
       name: 'Henry | C0012205',
-      avatar: Hazel,
+      avatar: Henry,
       description: ['Smart Contract Developer']
     },
     {
       name: 'Archer | C0021603',
-      avatar: Hazel,
+      avatar: Archer,
       description: ['Smart Contract Developer', 'Tokenomic Research']
     },
     {
       name: 'Osmond | C0012204',
-      avatar: Hazel,
+      avatar: Osmond,
       description: ['Whitepaper Writer']
     },
     {
       name: 'DavidW | C0021602',
-      avatar: Hazel,
+      avatar: David,
       description: ['Project Manager', 'Tokenomic Research']
     },
     {
       name: 'Avery | C0021604',
-      avatar: Hazel,
+      avatar: Avery,
       description: ['Smart Contract Developer']
     },
   ]
