@@ -4,7 +4,7 @@ import {
   Section3, Section4,
   Section5, Section6,
   Section7, Section8,
-  GetToken
+  // GetToken
 } from './components/index'
 
 import './assets/style/reset.css'
@@ -25,7 +25,7 @@ export const App = () => {
       <Section6 />
       <Section7 />
       <Section8 />
-      <GetToken />
+      {/* <GetToken /> */}
     </>
   )
 }
