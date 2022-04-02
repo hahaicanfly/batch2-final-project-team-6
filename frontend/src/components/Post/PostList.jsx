@@ -1,6 +1,7 @@
 import { Header } from '../../components'
 import Swal from 'sweetalert2'
 import { ethers, utils } from 'ethers'
+import Preloader from '../../assets/images/preloader.gif'
 import {
   useProvider,
   useAccount,
@@ -17,7 +18,7 @@ import { NoData } from './NoData'
 
 export const PostList = () => {
   const [loadedAssets, setLoadedAssets] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const provider = useProvider()
   const [{ data: accountData }] = useAccount({
@@ -66,13 +67,13 @@ export const PostList = () => {
   );
 
   const getPostList = async () => {
-    console.log('accountData', accountData)
     if (!accountData) {
       console.error('[getPostList] 沒有accountData', accountData)
       return
     }
 
     try {
+      setLoading(true)
       const { data, error } = await getTotalThreadCount()
       const countNumber = parseInt(data._hex) // 5
       console.log('countNumber', countNumber)
@@ -116,6 +117,7 @@ export const PostList = () => {
       }
 
       setLoadedAssets(topicList);
+      setLoading(false)
 
       console.log('[loadedAssets]', loadedAssets)
     } catch (error) {
@@ -138,8 +140,20 @@ export const PostList = () => {
 
 
   useEffect(() => {
-    console.log('useEffect', accountData)
+    getPostList()
   }, [accountData?.address])
+
+  if (loading) return <>
+    <Header />
+    <div className="loading">
+      <div>
+        <img src={Preloader} />
+        <span>
+          Loading Data...
+        </span>
+      </div>
+    </div>
+  </>
 
 
   return (
@@ -150,34 +164,30 @@ export const PostList = () => {
           {
             accountData?.address
               ?
-              loadedAssets.length === 0
-                ?
-                <button className="btn btn-border" onClick={getPostList}>取得文章</button>
-                :
-                loadedAssets?.map((post, index) => (
-                  post.image.map((img, i) => (
-                    <div className="box post" key={index}>
-                      <div className="post-info">
-                        <h2 className="linear-text">
-                          {post.name}
-                        </h2>
-                        <span>
-                          {img.content}
-                        </span>
-                      </div>
-                      <div className="post-btn">
-                        <span className="good">
-                          按讚次數 {isNaN(post.good) ? 0 : post?.good}
-                        </span>
-                        {/* <button className="btn btn-border" onClick={giveGood(post.threadId)}> */}
-                        {/* <button className="btn btn-border" onClick={loadedAssets[a].good}> */}
-                        {/* <button className="btn btn-border"> */}
-                        {/* 讚啦 */}
-                        {/* </button> */}
-                      </div>
+              loadedAssets?.map((post, index) => (
+                post.image.map((img, i) => (
+                  <div className="box post" key={index}>
+                    <div className="post-info">
+                      <h2 className="linear-text">
+                        {post.name}
+                      </h2>
+                      <span>
+                        {img.content}
+                      </span>
                     </div>
-                  ))
+                    <div className="post-btn">
+                      <span className="good">
+                        按讚次數 {isNaN(post.good) ? 0 : post?.good}
+                      </span>
+                      {/* <button className="btn btn-border" onClick={giveGood(post.threadId)} /> */}
+                      {/* <button className="btn btn-border" onClick={loadedAssets[a].good}> */}
+                      {/* <button className="btn btn-border"> */}
+                      {/* 讚啦 */}
+                      {/* </button> */}
+                    </div>
+                  </div>
                 ))
+              ))
               :
               <NoData />
           }
