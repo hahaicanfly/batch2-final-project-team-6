@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 // Utils
 import { Link } from "react-router-dom";
 import { useAccount, useBalance } from 'wagmi'
@@ -8,6 +9,7 @@ import '../assets/style/header.scss'
 import Logo from '../assets/images/TrustNews-logos.png'
 
 export const Header = () => {
+  const location = useLocation();
   // Connected account details
   const [{ data: accountData }, disconnect] = useAccount({
     fetchEns: true,
@@ -33,18 +35,15 @@ export const Header = () => {
             <ConnectWallet /> :
             <div>
               {/* <button className="btn">
-                <Link to="/post/create">
-                  發表文章
-                </Link>
-              </button> */}
-              {/* <button className="btn">
                 <Link to="/posts">
                   文章列表
                 </Link>
               </button> */}
               <div>
                 <button className="btn btn-border">
-                  {accountData?.address}
+                  <span>
+                    {accountData?.address.substring(0, 8)}...
+                  </span>
                   {/* Balance: {`${Number(getBalance?.formatted)} ETH`} */}
                 </button>
                 <button
@@ -52,6 +51,17 @@ export const Header = () => {
                   onClick={disconnect}>
                   登出
                 </button>
+                {
+                  location.pathname === '/posts'
+                    ?
+                    <Link to="/post/create">
+                      <button className="btn btn-border">
+                        發表文章
+                      </button>
+                    </Link>
+                    :
+                    <></>
+                }
 
               </div>
             </div>

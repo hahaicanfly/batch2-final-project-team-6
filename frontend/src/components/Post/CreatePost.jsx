@@ -9,6 +9,7 @@ import {
 } from "wagmi";
 import Swal from 'sweetalert2'
 import { ethers } from 'ethers'
+import { handleError } from '../../config/handle-error'
 // Contract
 import { post_contract } from '../../config/contract'
 // IPFS
@@ -49,7 +50,7 @@ export const CreatePost = () => {
     hash: ''
   })
 
-  const onFinish = async ({ title, description }) => {
+  const onFinish = async ({ title, description, nickName }) => {
     let today = new Date()
     today = today.toISOString().split('T')[0]
 
@@ -58,7 +59,7 @@ export const CreatePost = () => {
       name: title,
       image: [
         {
-          authorName: "henry",
+          authorName: nickName,
           content: description,
           timeStamp: today,
           cover: "https://austingriffith.com/images/paintings/fish.jpg",
@@ -99,14 +100,7 @@ export const CreatePost = () => {
     }
 
 
-    if (error) {
-      Swal.fire({
-        icon: 'error',
-        title: '發生錯誤',
-        text: `${error.reason || error.message}`,
-      })
-    }
-
+    if (error) handleError(error)
   };
 
   return (
@@ -114,6 +108,17 @@ export const CreatePost = () => {
       <Header />
       <div className="container">
         <Form form={form} name="control-hooks" onFinish={onFinish}>
+          <Form.Item
+            name="nickName"
+            label="暱稱"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             name="title"
             label="文章標題"
