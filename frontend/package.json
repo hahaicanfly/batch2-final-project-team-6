@@ -73,8 +73,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "deploy": "gh-pages -d build",
-    "qq": "yarn build && git-directory-deploy --directory build --repo hazel"
+    "deploy": "yarn build && git-directory-deploy --directory build --repo hazel"
   },
   "eslintConfig": {
     "extends": [
