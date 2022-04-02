@@ -2,6 +2,7 @@
   "name": "test",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hazelwu2.github.io/kcrypto-camp-final-project-team/",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -29,6 +30,7 @@
     "ethers": "^5.6.2",
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "identity-obj-proxy": "^3.0.0",
     "ipfs-http-client": "^45.0.0",
@@ -69,7 +71,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy": "react-scripts build && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
