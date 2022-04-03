@@ -1,10 +1,13 @@
 // Wagmi
 import {
+  useAccount,
+  useBalance,
   useProvider,
+  useContractRead,
   useContractWrite,
 } from "wagmi";
 // Contract
-import { post_contract } from '../config/contract'
+import { post_contract, gt_token_contract, ut_token_contract } from '../config/contract'
 import { ethers } from 'ethers'
 // IPFS
 const ipfsAPI = require("ipfs-http-client");
@@ -16,77 +19,54 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
 export const GetToken = () => {
   const provider = useProvider()
 
-  const [{ }, getThreadOwner] = useContractWrite(
+  const [{ data: accountData }] = useAccount({
+    fetchEns: true,
+  })
+  // Fetching balance information
+  const [{ data: getBalance }] = useBalance({
+    addressOrName: accountData?.address,
+  });
+
+  const [{ }, mint] = useContractWrite(
     {
-      addressOrName: post_contract.address,
-      contractInterface: post_contract.abi,
+      addressOrName: gt_token_contract.address,
+      contractInterface: gt_token_contract.abi,
+      signerOrProvider: provider,
     },
-    'getThreadOwner',
-  )
-  const [{ }, getTotalThreadCount] = useContractWrite(
-    {
-      addressOrName: post_contract.address,
-      contractInterface: post_contract.abi,
-    },
-    'getTotalThreadCount',
-  )
-  const [{ }, postThread] = useContractWrite(
-    {
-      addressOrName: post_contract.address,
-      contractInterface: post_contract.abi,
-    },
-    'postThread',
+    'mint',
   )
 
-  const getOwner = async () => {
-    const result = await getThreadOwner({
-      args: [1],
+  const [{ }, balanceOf] = useContractRead(
+    {
+      addressOrName: gt_token_contract.address,
+      contractInterface: gt_token_contract.abi,
+      signerOrProvider: provider,
+    },
+    'balanceOf',
+  )
+
+  const getGtBalance = async () => {
+    const { data, error } = await balanceOf({
+      args: [accountData.address]
     })
-    console.log('result', result)
+
+    const balance = parseInt(data._hex)
+
+
+    console.log(data)
+    console.log('GT餘額: ', balance)
+    console.log(error)
   }
 
-  const getTotalCount = async () => {
-    const result = await getTotalThreadCount()
-    console.log(result)
+
+  const mintGtToken = async () => {
+    const { data, error } = await mint({
+      args: [accountData.address, 1000]
+    })
+
+    console.log(data)
+    console.log(error)
   }
-
-  // connect to a different API
-  const uploadFile = async () => {
-    const stringJSON = JSON.stringify({
-      name: "article2",
-      description: "What is it so worried about?",
-      external_url: "https://austingriffith.com/portfolio/paintings/?id=zebra",
-      image: [
-        {
-          authorName: "henry",
-          content: "廢文2 測試",
-          timeStamp: "2022-02-01",
-          cover: "https://austingriffith.com/images/paintings/fish.jpg",
-        },
-      ],
-      attributes: [
-        {
-          trait_type: "BackgroundColor",
-          value: "blue",
-        },
-        {
-          trait_type: "Eyes",
-          value: "googly",
-        },
-        {
-          trait_type: "Stamina",
-          value: 38,
-        },
-      ],
-    });
-    const uploaded = await ipfs.add(stringJSON);
-    console.log(uploaded) // https://ipfs.io/ipfs/hash
-
-    let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
-    let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
-    console.error('bytes32First', bytes32First)
-    console.error('bytes32Sec', bytes32Sec)
-  };
 
   return (
     <section className="section3">
@@ -96,21 +76,17 @@ export const GetToken = () => {
         </div>
 
         <div className="btn-list">
-
           <button
             className="btn btn-border"
-            onClick={getOwner}>
-            Get Thread Owner
+            onClick={getGtBalance}
+          >
+            getGtBalance
           </button>
           <button
             className="btn btn-border"
-            onClick={getTotalCount}>
-            get Total Thread Count
-          </button>
-          <button
-            className="btn btn-border"
-            onClick={uploadFile}>
-            upload File
+            onClick={mintGtToken}
+          >
+            mintGtToken
           </button>
 
         </div>

@@ -42,9 +42,8 @@ export const Header = () => {
               <div>
                 <button className="btn btn-border">
                   <span>
-                    {accountData?.address.substring(0, 8)}...
+                    {accountData?.address.substring(0, 5)}...
                   </span>
-                  {/* Balance: {`${Number(getBalance?.formatted)} ETH`} */}
                 </button>
                 <button
                   className="btn btn-border"
