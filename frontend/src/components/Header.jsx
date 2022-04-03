@@ -41,9 +41,7 @@ export const Header = () => {
               </button> */}
               <div>
                 <button className="btn btn-border">
-                  <span>
-                    {accountData?.address.substring(0, 5)}...
-                  </span>
+                  {accountData?.address.substring(0, 6)}...
                 </button>
                 <button
                   className="btn btn-border"
