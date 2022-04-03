@@ -55,31 +55,31 @@ export const CreatePost = () => {
   })
 
   const onFinish = async ({ title, description, nickName }) => {
-    let today = new Date()
-    today = today.toISOString().split('T')[0]
-
-    const item = JSON.stringify({
-      name: title,
-      image: [
-        {
-          authorName: nickName,
-          content: description,
-          timeStamp: today,
-          cover: "https://austingriffith.com/images/paintings/fish.jpg",
-        },
-      ]
-    })
-
-    setLoading(true)
-
-    // 上傳至 IPFS
-    const uploaded = await ipfs.add(item)
-
-    console.error('已上傳IPFS: ', uploaded)
-    console.error(`[IPFS網址] https://ipfs.io/ipfs/${uploaded.path}`)
-
 
     try {
+      let today = new Date()
+      today = today.toISOString().split('T')[0]
+
+      const item = JSON.stringify({
+        name: title,
+        image: [
+          {
+            authorName: nickName,
+            content: description,
+            timeStamp: today,
+            cover: "https://austingriffith.com/images/paintings/fish.jpg",
+          },
+        ]
+      })
+      setLoading(true)
+
+      // 上傳至 IPFS
+      const uploaded = await ipfs.add(item)
+
+      console.error('已上傳IPFS: ', uploaded)
+      console.error(`[IPFS網址] https://ipfs.io/ipfs/${uploaded.path}`)
+
+
       // 給 postThread 的參數
       let bytes32First = ethers.utils.formatBytes32String(uploaded.path.substring(0, 22));
       let bytes32Sec = ethers.utils.formatBytes32String(uploaded.path.substring(22));
@@ -100,8 +100,10 @@ export const CreatePost = () => {
       }
 
 
-      if (error) handleError(error)
-      setLoading(true)
+      if (error) {
+        handleError(error)
+        setLoading(false)
+      }
     } catch (error) {
       setLoading(false)
     }
