@@ -25,7 +25,7 @@ export const PostModal = (props) => {
         {
           props?.singlePost?.image.map((item, index) => (
             <>
-              <div className="title">
+              <div className="title" key={index}>
                 <h2>
                   {props?.singlePost.name}
                 </h2>

@@ -6,7 +6,7 @@ import {
   useProvider,
   useAccount,
   useContractRead,
-  useContractWrite
+  useContractWrite, useWaitForTransaction
 } from "wagmi";
 import React, { useEffect, useState } from "react";
 import { handleError } from '../../config/handle-error'
@@ -23,6 +23,7 @@ export const PostList = () => {
   const [loading, setLoading] = useState(true)
   const [modalVisible, setModalVisible] = useState(false);
   const [singlePost, setSinglePost] = useState({});
+  const [txHash, setTxHash] = useState('')
 
   const provider = useProvider()
   const [{ data: accountData }] = useAccount({
@@ -69,6 +70,10 @@ export const PostList = () => {
     },
     "giveThreadOneGood"
   );
+
+  let [{ data, error, loading: txLoading }, waitForTransaction] = useWaitForTransaction({
+    hash: txHash
+  })
 
   const getPostList = async () => {
     if (!accountData) {
@@ -138,6 +143,7 @@ export const PostList = () => {
     const { data, error } = await giveThreadOneGood({
       args: [threadId]
     })
+    setTxHash(data.hash)
     console.log(data, error)
   }
 
@@ -148,19 +154,46 @@ export const PostList = () => {
 
   useEffect(() => {
     getPostList()
-  }, [accountData?.address])
+  }, [accountData?.address, data])
 
-  if (loading) return <>
+  if (loading || txLoading) return <>
     <Header />
     <div className="loading">
       <div>
         <img src={PreloaderGif} />
         <span>
-          Loading Data...
+          {
+            loading && 'Loading Data...'
+          }
+          {
+            txLoading && 'Waiting For Transaction...'
+          }
+
         </span>
       </div>
     </div>
   </>
+
+  if (error) return <>
+    <Header />
+    <div className="loading">
+      <div>
+        <span>
+          {error} Transaction Error
+        </span>
+      </div>
+    </div>
+  </>
+
+  if (data) {
+    data = {}
+    Swal.fire({
+      title: '按讚成功',
+      icon: 'info',
+      showCancelButton: false,
+      confirmButtonText: 'OK'
+    })
+  }
 
   return (
     <>
@@ -177,9 +210,6 @@ export const PostList = () => {
                       <h2 className="linear-text">
                         {post.name}
                       </h2>
-                      {/* <span>
-                        {img.content}
-                      </span> */}
                     </div>
                     <div className="post-btn">
                       <span className="author">
@@ -202,7 +232,6 @@ export const PostList = () => {
                         按讚
                       </button>
                       <button className="good-btn btn btn-border" onClick={() => {
-                        console.log('test', post.threadId)
                         setSinglePost(post)
                         setModalVisible(true)
                       }}>
