@@ -33,6 +33,10 @@
 //   margin: 0 auto;
 // }
 
+.d-flex {
+  display: flex;
+}
+
 .flex-justify {
   display: flex;
   justify-content: center;
@@ -43,11 +47,19 @@
   flex-direction: column;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .text-center {
   text-align: center;
 }
 .text-left {
   text-align: left;
+}
+
+.mr-2 {
+  margin-right: 2rem;
 }
 
 
