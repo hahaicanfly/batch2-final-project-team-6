@@ -5,7 +5,7 @@ export const PostModal = (props) => {
 
   const customStyles = {
     content: {
-      background: "black",
+      background: "transparent",
       position: "relative",
       transform: "translate(-50%, 50%)",
       top: "0%",
