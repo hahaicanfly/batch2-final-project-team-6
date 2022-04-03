@@ -3,9 +3,7 @@ import { Form, Input } from 'antd';
 import { useNavigate, useHistory } from "react-router-dom";
 import {
   useProvider,
-  useContract,
   useAccount,
-  useContractRead,
   useContractWrite,
   useWaitForTransaction
 } from "wagmi";
@@ -33,6 +31,7 @@ export const CreatePost = () => {
   const provider = useProvider()
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false)
+  const [txHash, setTxHash] = useState('')
 
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
@@ -51,14 +50,13 @@ export const CreatePost = () => {
     "postThread"
   );
 
-  const [{ }, wait] = useWaitForTransaction({
-    hash: ''
+  const [{ data, error, loading: txLoading }, waitForTransaction] = useWaitForTransaction({
+    hash: txHash
   })
 
   const onFinish = async ({ title, description, nickName }) => {
     let today = new Date()
     today = today.toISOString().split('T')[0]
-
 
     const item = JSON.stringify({
       name: title,
@@ -98,15 +96,7 @@ export const CreatePost = () => {
       if (data) {
         console.log(data)
         const hash = data.hash
-
-        if (hash) {
-          Swal.fire({
-            icon: 'info',
-            title: '成功送出交易...',
-            text: `https://rinkeby.etherscan.io/tx/${hash}`,
-          })
-          navigate('/posts')
-        }
+        setTxHash(hash)
       }
 
 
@@ -117,7 +107,7 @@ export const CreatePost = () => {
     }
   };
 
-  if (loading) return <>
+  if (loading || txLoading) return <>
     <Header />
     <div className="loading">
       <div>
@@ -128,6 +118,26 @@ export const CreatePost = () => {
       </div>
     </div>
   </>
+
+  if (error) return <>
+    <Header />
+    <div className="loading">
+      <div>
+        <span>
+          {error} Transaction Error
+        </span>
+      </div>
+    </div>
+  </>
+
+  if (data) {
+    Swal.fire({
+      icon: 'info',
+      title: '交易成功',
+      text: `導向回到文章列表，https://rinkeby.etherscan.io/tx/${txHash}`,
+    })
+    navigate('/posts')
+  }
 
   return (
     <div className="create-post">
@@ -165,7 +175,7 @@ export const CreatePost = () => {
               },
             ]}
           >
-            <Input />
+            <Input.TextArea />
           </Form.Item>
           <Form.Item {...tailLayout}>
             <button className="btn btn-border" type="submit">
