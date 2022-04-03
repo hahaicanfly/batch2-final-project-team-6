@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2'
 import { ethers, utils } from 'ethers'
-import { Header } from '../../components'
+import { Header, PostModal } from '../../components'
 
 import {
   useProvider,
@@ -21,6 +21,8 @@ import { NoData } from './NoData'
 export const PostList = () => {
   const [loadedAssets, setLoadedAssets] = useState([])
   const [loading, setLoading] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [singlePost, setSinglePost] = useState({});
 
   const provider = useProvider()
   const [{ data: accountData }] = useAccount({
@@ -139,6 +141,10 @@ export const PostList = () => {
     console.log(data, error)
   }
 
+  const closeModal = () => {
+    setModalVisible(false)
+  }
+
 
   useEffect(() => {
     getPostList()
@@ -188,6 +194,8 @@ export const PostList = () => {
                       <span className="good">
                         按讚次數 {isNaN(post.good) ? 0 : post?.good}
                       </span>
+                    </div>
+                    <div className="post-btn">
                       <button className="good-btn btn btn-border" onClick={() => {
                         giveGood(post.threadId)
                       }}>
@@ -195,6 +203,8 @@ export const PostList = () => {
                       </button>
                       <button className="good-btn btn btn-border" onClick={() => {
                         console.log('test', post.threadId)
+                        setSinglePost(post)
+                        setModalVisible(true)
                       }}>
                         閱讀
                       </button>
@@ -204,6 +214,17 @@ export const PostList = () => {
               ))
               :
               <NoData />
+          }
+
+          {
+            modalVisible && (
+              <PostModal
+                modalVisible={modalVisible}
+                singlePost={singlePost}
+                closeModal={closeModal}
+                giveGood={giveGood}
+              />
+            )
           }
         </div>
       </div>

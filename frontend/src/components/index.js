@@ -6,6 +6,6 @@ export {
   Section7, Section8
 } from './Home/index'
 export { Header } from './Header'
-export { PostList, CreatePost } from './Post'
+export { PostList, CreatePost, PostModal } from './Post'
 export { ConnectWallet } from './ConnectWallet'
 export { GetToken } from './GetToken'

@@ -13,6 +13,7 @@ import './assets/style/_mixins.scss'
 import './assets/style/helper.scss'
 import './assets/style/home.scss'
 import './assets/style/post.scss'
+import './assets/style/modal.scss'
 
 export const App = () => {
   return (
