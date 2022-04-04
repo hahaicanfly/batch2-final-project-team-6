@@ -12,7 +12,7 @@ export const Section4 = () => {
           <div className="btn-list">
             <a
               href={gitBook}
-              target="_blank"
+              target="_blank" rel="noreferrer"
             >
               <button className="btn btn-border">
                 白皮書連結
