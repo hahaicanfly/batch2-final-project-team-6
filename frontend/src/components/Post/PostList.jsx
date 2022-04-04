@@ -207,7 +207,7 @@ export const PostList = () => {
                 post.image.map((img, i) => (
                   <div className="box post" key={index}>
                     <div className="post-info">
-                      <h2 className="linear-text">
+                      <h2>
                         {post.name}
                       </h2>
                     </div>
