@@ -1,7 +1,7 @@
 import Tokenomics from '../../assets/images/tokenomatic.png'
 
 export const Section4 = () => {
-  const gitBook = 'https://ho-msho.gitbook.io/untitled/'
+  const gitBook = 'https://hiippo.gitbook.io/trustnews-dao/'
 
   return (
     <section className="section4">

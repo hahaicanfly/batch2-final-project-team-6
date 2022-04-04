@@ -12,7 +12,7 @@
 <p align="center">
     <a href="https://hazelwu2.github.io/kcrypto-camp-final-project-team/" target="blank">Online Demo</a>
     ·
-     <a href="https://ho-msho.gitbook.io/untitled/" target="blank">白皮書</a>
+     <a href="https://hiippo.gitbook.io/trustnews-dao/" target="blank">白皮書</a>
     ·
     <a href="https://www.figma.com/file/dmekLLaoDZx0mD3BkL4Uoz/KcryptoCamp-TrustNews-Dao?node-id=17%3A3">Figma</a>
     ·
@@ -41,7 +41,7 @@ TrustNews Dao 是基於web3社群機制的鏈上媒體平台，希望同時解�
 ### ✍️ Phase 4
 TrustNews Dao 完全自治
 
-[🧐 更多說明](https://ho-msho.gitbook.io/untitled/)
+[🧐 更多說明](https://hiippo.gitbook.io/trustnews-dao/)
 
 
 ## 🛠️ 開發
