@@ -1,0 +1,52 @@
+[
+  {
+    "name": "article1",
+    "description": "It's actually a bison?",
+    "external_url": "https://austingriffith.com/portfolio/paintings/?id=buffalo",
+    "image": [{
+      "authorName": "henry",
+      "content": "廢文1",
+      "timeStamp": "2022-01-01",
+      "cover": "https://austingriffith.com/images/paintings/fish.jpg"
+    }],
+    "attributes": [
+      {
+        "trait_type": "BackgroundColor",
+        "value": "green"
+      },
+      {
+        "trait_type": "Eyes",
+        "value": "googly"
+      },
+      {
+        "trait_type": "Stamina",
+        "value": 42
+      }
+    ]
+  },
+  {
+    "name": "article2",
+    "description": "What is it so worried about?",
+    "external_url": "https://austingriffith.com/portfolio/paintings/?id=zebra",
+    "image": [{
+      "authorName": "henry",
+      "content": "廢文2 測試",
+      "timeStamp": "2022-02-01",
+      "cover": "https://austingriffith.com/images/paintings/fish.jpg"
+    }],
+    "attributes": [
+      {
+        "trait_type": "BackgroundColor",
+        "value": "blue"
+      },
+      {
+        "trait_type": "Eyes",
+        "value": "googly"
+      },
+      {
+        "trait_type": "Stamina",
+        "value": 38
+      }
+    ]
+  }
+]
